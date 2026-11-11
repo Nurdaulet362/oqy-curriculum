@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import {
   ArrowDownToLine,
   ArrowRight,
@@ -6,7 +6,6 @@ import {
   BarChart3,
   BookOpen,
   Check,
-  ChevronDown,
   CircleHelp,
   Clock3,
   Database,
@@ -33,8 +32,8 @@ const nav = [
   { id: "plan", label: "Планирование часов", icon: Clock3 },
   { id: "data", label: "Источники данных", icon: Database },
 ] as const;
-const pct = (n: number) =>
-  new Intl.NumberFormat("ru-RU", { maximumFractionDigits: 1 }).format(n);
+const percentFormat = new Intl.NumberFormat("ru-RU", { maximumFractionDigits: 1 });
+const pct = (n: number) => percentFormat.format(n);
 function download(name: string, content: string, type: string) {
   const url = URL.createObjectURL(new Blob([content], { type }));
   const a = document.createElement("a");
@@ -78,7 +77,7 @@ function Report({
     );
   return (
     <button className="btn secondary" onClick={exportReport} disabled={disabled}>
-      <ArrowDownToLine size={16} />
+      <ArrowDownToLine aria-hidden="true" size={16} />
       Скачать отчёт
     </button>
   );
@@ -99,6 +98,7 @@ export default function App() {
   const [message, setMessage] = useState("");
   const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
   const fileInput = useRef<HTMLInputElement>(null);
+  const topicTrigger = useRef<HTMLButtonElement | null>(null);
   const requestId = useRef(0);
   const demoController = useRef<AbortController | null>(null);
   function install(next: ResultRow[], name: string, demo: boolean) {
@@ -163,17 +163,13 @@ export default function App() {
       }
     }
   }
-  const subjects = [...new Set(rows.map((r) => r.subject))];
-  const grades = [
+  const subjects = useMemo(() => [...new Set(rows.map((r) => r.subject))], [rows]);
+  const grades = useMemo(() => [
     ...new Set(rows.filter((r) => r.subject === subject).map((r) => r.grade)),
-  ];
-  const schools = [
-    ...new Set(
-      rows
-        .filter((r) => r.subject === subject && r.grade === grade)
-        .map((r) => r.school),
-    ),
-  ];
+  ], [rows, subject]);
+  const schools = useMemo(() => [
+    ...new Set(rows.filter((r) => r.subject === subject && r.grade === grade).map((r) => r.school)),
+  ], [rows, subject, grade]);
   const filtered = useMemo(
     () =>
       rows.filter(
@@ -224,7 +220,6 @@ export default function App() {
   }
   const weak = a?.topics.filter((t) => t.mean < 70) ?? [];
   const sorted = [...(a?.topics ?? [])].sort((x, y) => x.mean - y.mean);
-  const activeTopic = a?.topics.find((t) => t.topic === selectedTopic);
   const title =
     view === "overview"
       ? "Каждая тема. Полная картина."
@@ -265,9 +260,12 @@ export default function App() {
   }
   return (
     <div className="app-shell">
+      <a className="skip-link" href="#main-content">Перейти к содержимому</a>
       <aside className="sidebar">
         <a
           className="brand"
+          aria-label="OQY — обзор программы"
+          translate="no"
           href="#"
           onClick={(e) => {
             e.preventDefault();
@@ -275,18 +273,17 @@ export default function App() {
           }}
         >
           <span className="brand-mark">
-            <BookOpen size={23} />
+            <BookOpen aria-hidden="true" size={23} />
           </span>
           oqy<span className="brand-dot">.</span>
         </a>
         <div className="workspace">
           <span className="workspace-icon">
-            <GraduationCap size={19} />
+            <GraduationCap aria-hidden="true" size={19} />
           </span>
           <span>
             Кабинет методиста<small>Учебная аналитика</small>
           </span>
-          <ChevronDown size={14} />
         </div>
         <p className="nav-label">РАБОЧЕЕ ПРОСТРАНСТВО</p>
         <nav aria-label="Основная навигация">
@@ -294,21 +291,23 @@ export default function App() {
             <button
               key={n.id}
               className={`nav-item ${view === n.id ? "active" : ""}`}
+              aria-current={view === n.id ? "page" : undefined}
               onClick={() => {
                 setView(n.id);
                 setSelectedTopic(null);
               }}
             >
-              <n.icon size={18} />
+              <n.icon aria-hidden="true" size={18} />
               {n.label}
               {view === n.id && <span className="nav-dot" />}
             </button>
           ))}
           <button
-            className="nav-item mobile-only"
+            className={`nav-item mobile-only ${view === "method" ? "active" : ""}`}
+            aria-current={view === "method" ? "page" : undefined}
             onClick={() => setView("method")}
           >
-            <CircleHelp size={18} />
+            <CircleHelp aria-hidden="true" size={18} />
             Методология
           </button>
           <a
@@ -317,13 +316,13 @@ export default function App() {
             target="_blank"
             rel="noreferrer"
           >
-            <ArrowUpRight size={18} />
+            <ArrowUpRight aria-hidden="true" size={18} />
             Презентация
           </a>
         </nav>
         <div className="sidebar-bottom">
           <div className="privacy">
-            <ShieldCheck size={21} />
+            <ShieldCheck aria-hidden="true" size={21} />
             <strong>Ваши данные — у вас</strong>
             <p>
               Обработка в браузере.
@@ -333,9 +332,10 @@ export default function App() {
           </div>
           <button
             className={`nav-item ${view === "method" ? "active" : ""}`}
+            aria-current={view === "method" ? "page" : undefined}
             onClick={() => setView("method")}
           >
-            <CircleHelp size={18} />
+            <CircleHelp aria-hidden="true" size={18} />
             Методология
           </button>
           <a
@@ -344,7 +344,7 @@ export default function App() {
             target="_blank"
             rel="noreferrer"
           >
-            <ArrowUpRight size={18} />
+            <ArrowUpRight aria-hidden="true" size={18} />
             Презентация проекта
           </a>
           <div className="profile">
@@ -367,12 +367,9 @@ export default function App() {
             Локальный режим
           </span>
         </header>
-        <main>
+        <main id="main-content" tabIndex={-1}>
           <div className="page-heading">
             <div>
-              <div className="eyebrow">
-                DATA-DRIVEN CURRICULUM <span> / </span> OQY
-              </div>
               <h1>{title}</h1>
               <p>
                 {view === "overview"
@@ -391,12 +388,13 @@ export default function App() {
               disabled={busy}
               onClick={() => fileInput.current?.click()}
             >
-              <Upload size={17} />
+              <Upload aria-hidden="true" size={17} />
               Загрузить CSV
             </button>
             <input
               ref={fileInput}
               aria-label="CSV с результатами"
+              name="results-csv"
               type="file"
               accept=".csv,text/csv"
               hidden
@@ -420,20 +418,20 @@ export default function App() {
                 aria-label="Закрыть ошибку"
                 onClick={() => setError([])}
               >
-                <X size={18} />
+                <X aria-hidden="true" size={18} />
               </button>
             </div>
           )}
           {message && (
             <div className="notice success" role="status">
-              <Check size={17} />
+              <Check aria-hidden="true" size={17} />
               {message}
               <button
                 className="icon-btn"
                 aria-label="Закрыть уведомление"
                 onClick={() => setMessage("")}
               >
-                <X size={16} />
+                <X aria-hidden="true" size={16} />
               </button>
             </div>
           )}
@@ -448,7 +446,7 @@ export default function App() {
               </span>
             </span>
             <button className="text-button" onClick={() => setView("data")}>
-              О данных <ArrowRight size={14} />
+              О данных <ArrowRight aria-hidden="true" size={14} />
             </button>
           </div>
           {view !== "data" && view !== "method" && (
@@ -458,6 +456,7 @@ export default function App() {
                   Предмет
                   <select
                     aria-label="Предмет"
+                    name="subject"
                     value={subject}
                     onChange={(e) => changeSubject(e.target.value)}
                   >
@@ -470,6 +469,7 @@ export default function App() {
                   Класс
                   <select
                     aria-label="Класс"
+                    name="grade"
                     value={grade}
                     onChange={(e) => {
                       setGrade(e.target.value);
@@ -488,6 +488,7 @@ export default function App() {
                   Школа
                   <select
                     aria-label="Школа"
+                    name="school"
                     value={school === null ? "" : JSON.stringify(school)}
                     onChange={(e) => {
                       setSchool(e.target.value === "" ? null : JSON.parse(e.target.value));
@@ -534,7 +535,7 @@ export default function App() {
             view !== "data" &&
             view !== "method" && (
               <section className="empty-state">
-                <Database size={36} />
+                <Database aria-hidden="true" size={36} />
                 <h2>Пока нет результатов</h2>
                 <p>Загрузите CSV или откройте демонстрационный набор.</p>
                 <button className="btn primary" onClick={() => void loadDemo()}>
@@ -546,27 +547,27 @@ export default function App() {
             <>
               <div className="metrics">
                 <Metric
-                  icon={<Users size={18} />}
+                  icon={<Users aria-hidden="true" size={18} />}
                   label="Учеников в выборке"
                   value={String(a.students)}
                   detail={`${a.schools} школы · ${filtered.length} результатов`}
                 />
                 <Metric
-                  icon={<BarChart3 size={18} />}
+                  icon={<BarChart3 aria-hidden="true" size={18} />}
                   label="Средний результат"
                   value={`${pct(a.mean)}%`}
                   detail="От максимального балла"
                   accent
                 />
                 <Metric
-                  icon={<BookOpen size={18} />}
+                  icon={<BookOpen aria-hidden="true" size={18} />}
                   label="Требуют внимания"
                   value={`${weak.length}`}
                   detail={`из ${a.topics.length} тем · результат ниже 70%`}
                   warning
                 />
                 <Metric
-                  icon={<Clock3 size={18} />}
+                  icon={<Clock3 aria-hidden="true" size={18} />}
                   label="Учебных часов"
                   value={String(a.totalHours)}
                   detail="В текущем учебном плане"
@@ -593,26 +594,49 @@ export default function App() {
                     <span className="target-label">Ориентир — 70%</span>
                   </div>
                   <div className="topic-chart">
-                    {sorted.map((t) => (
-                      <button
-                        key={t.topic}
-                        className="topic-row"
-                        onClick={() => setSelectedTopic(t.topic)}
-
-                      >
-                        <span className="topic-name">{t.topic}</span>
-                        <span className="bar-track">
-                          <span
-                            className={`bar-fill ${t.mean < 70 ? "amber" : ""}`}
-                            style={{ width: `${t.mean}%` }}
-                          />
-                          <span className="target-line" />
-                        </span>
-                        <strong>
-                          {pct(t.mean)}
-                          <span>%</span>
-                        </strong>
-                      </button>
+                    {sorted.map((t, index) => (
+                      <Fragment key={t.topic}>
+                        <button
+                          className={`topic-row ${selectedTopic === t.topic ? "selected" : ""}`}
+                          aria-expanded={selectedTopic === t.topic}
+                          aria-controls={selectedTopic === t.topic ? `topic-detail-${index}` : undefined}
+                          ref={selectedTopic === t.topic ? topicTrigger : undefined}
+                          onClick={(event) => {
+                            topicTrigger.current = event.currentTarget;
+                            setSelectedTopic(selectedTopic === t.topic ? null : t.topic);
+                          }}
+                        >
+                          <span className="topic-name">{t.topic}</span>
+                          <span className="bar-track">
+                            <span
+                              className={`bar-fill ${t.mean < 70 ? "amber" : ""}`}
+                              style={{ width: `${t.mean}%` }}
+                            />
+                            <span className="target-line" />
+                          </span>
+                          <strong>
+                            {pct(t.mean)}
+                            <span>%</span>
+                          </strong>
+                        </button>
+                        {selectedTopic === t.topic && (
+                          <section className="topic-detail" id={`topic-detail-${index}`} aria-label={`Подробности: ${t.topic}`}>
+                            <div>
+                              <h3>{t.topic}</h3>
+                              <p>{t.students} учеников · {t.count} результатов · средний балл {pct(t.mean)}%</p>
+                              <p>Порог 70% достигнут в {pct(t.mastery)}% результатов. Текущие часы: {t.currentHours}; предложено: {t.recommendedHours}.</p>
+                            </div>
+                            <button
+                              className="icon-btn"
+                              aria-label="Закрыть подробности"
+                              onClick={() => {
+                                setSelectedTopic(null);
+                                topicTrigger.current?.focus();
+                              }}
+                            ><X aria-hidden="true" size={18} /></button>
+                          </section>
+                        )}
+                      </Fragment>
                     ))}
                     <div className="chart-axis">
                       <span>0</span>
@@ -633,13 +657,13 @@ export default function App() {
                 <section className="insight-panel">
                   <div className="insight-top">
                     <span>
-                      <Sparkles size={16} />
+                      <Sparkles aria-hidden="true" size={16} />
                       ФОКУС МЕТОДИСТА
                     </span>
-                    <ArrowUpRight size={21} />
+                    <ArrowUpRight aria-hidden="true" size={21} />
                   </div>
                   <div className="insight-symbol">
-                    <Leaf size={36} strokeWidth={1.4} />
+                    <Leaf aria-hidden="true" size={36} strokeWidth={1.4} />
                   </div>
                   <h2>
                     {sorted[0]?.topic ?? "Учебная программа"} —<br />
@@ -654,42 +678,19 @@ export default function App() {
                     <span>Предложение по часам</span>
                     <strong>
                       {sorted[0]?.currentHours}
-                      <ArrowRight size={22} />
+                      <ArrowRight aria-hidden="true" size={22} />
                       {sorted[0]?.recommendedHours}
                       <small>ч.</small>
                     </strong>
                   </div>
                   <button className="btn lime" onClick={() => setView("plan")}>
-                    Посмотреть план <ArrowRight size={17} />
+                    Посмотреть план <ArrowRight aria-hidden="true" size={17} />
                   </button>
                   <small className="insight-disclaimer">
                     Рекомендация по данным, решение — за вами.
                   </small>
                 </section>
               </div>
-              {activeTopic && (
-                <section className="panel topic-detail">
-                  <div>
-                    <h2>{activeTopic.topic}</h2>
-                    <p>
-                      {activeTopic.students} учеников · {activeTopic.count}{" "}
-                      результатов · средний балл {pct(activeTopic.mean)}%
-                    </p>
-                    <p>
-                      Порог 70% достигнут в {pct(activeTopic.mastery)}%
-                      результатов. Текущие часы: {activeTopic.currentHours};
-                      предложено: {activeTopic.recommendedHours}.
-                    </p>
-                  </div>
-                  <button
-                    className="icon-btn"
-                    aria-label="Закрыть подробности"
-                    onClick={() => setSelectedTopic(null)}
-                  >
-                    <X size={18} />
-                  </button>
-                </section>
-              )}
               <section className="panel bottom-panel">
                 <div className="panel-heading">
                   <div>
@@ -701,7 +702,7 @@ export default function App() {
                 <div className="action-grid">
                   <button onClick={() => setView("books")}>
                     <span className="action-icon">
-                      <BookOpen size={22} />
+                      <BookOpen aria-hidden="true" size={22} />
                     </span>
                     <span>
                       <strong>Какой учебник помогает лучше?</strong>
@@ -709,17 +710,17 @@ export default function App() {
                         Сравните {a.books.length} учебника по одинаковым темам
                       </small>
                     </span>
-                    <ArrowUpRight size={20} />
+                    <ArrowUpRight aria-hidden="true" size={20} />
                   </button>
                   <button onClick={() => setView("plan")}>
                     <span className="action-icon peach">
-                      <SlidersHorizontal size={22} />
+                      <SlidersHorizontal aria-hidden="true" size={22} />
                     </span>
                     <span>
                       <strong>Куда направить учебные часы?</strong>
                       <small>Сбалансируйте план с учётом сложных тем</small>
                     </span>
-                    <ArrowUpRight size={20} />
+                    <ArrowUpRight aria-hidden="true" size={20} />
                   </button>
                 </div>
               </section>
@@ -728,7 +729,7 @@ export default function App() {
           {a && filtered.length > 0 && view === "books" && (
             <>
               <div className="notice">
-                <BookOpen size={20} />
+                <BookOpen aria-hidden="true" size={20} />
                 <span>
                   Для сопоставления используются{" "}
                   <strong>{a.commonTopics.length} общих тем</strong> с
@@ -740,7 +741,7 @@ export default function App() {
                 {a.books.map((b, i) => (
                   <section className="panel book-card" key={b.textbook}>
                     <span className={`book-cover cover-${i % 2}`}>
-                      <BookOpen size={38} />
+                      <BookOpen aria-hidden="true" size={38} />
                       <small>УЧЕБНЫЙ МАТЕРИАЛ</small>
                       <strong>{b.textbook}</strong>
                     </span>
@@ -773,7 +774,8 @@ export default function App() {
                     </p>
                   </div>
                 </div>
-                <div className="table-wrap" tabIndex={0} role="region" aria-label="Таблица результатов">
+                <p className="table-hint">На узком экране прокрутите таблицу вправо.</p>
+                <div className="table-wrap" tabIndex={0} role="region" aria-label="Сравнение учебников по темам">
                   <table>
                     <thead>
                       <tr>
@@ -814,7 +816,7 @@ export default function App() {
                 </div>
               </section>
               <div className="notice muted">
-                <ShieldCheck size={20} />
+                <ShieldCheck aria-hidden="true" size={20} />
                 <span>
                   Разница в результатах не доказывает влияние учебника. На неё
                   могут влиять подготовка учеников, учитель и условия школы. Для
@@ -827,7 +829,6 @@ export default function App() {
             <>
               <section className="plan-banner">
                 <div>
-                  <span className="eyebrow">СЦЕНАРИЙ РАСПРЕДЕЛЕНИЯ</span>
                   <h2>Тот же ресурс. Больше внимания сложным темам.</h2>
                   <p>
                     Минимум один час на тему. Итоговая сумма точно совпадает с
@@ -838,6 +839,9 @@ export default function App() {
                   Бюджет часов
                   <input
                     aria-label="Бюджет часов"
+                    name="hours-budget"
+                    inputMode="numeric"
+                    autoComplete="off"
                     type="number"
                     min={a.topics.length}
                     max={100000}
@@ -849,8 +853,9 @@ export default function App() {
                       if (e.key === "Enter") applyBudget();
                     }}
                     aria-invalid={!!budgetError}
-                    aria-describedby={budgetError ? "budget-error" : undefined}
+                    aria-describedby={budgetError ? "budget-hint budget-error" : "budget-hint"}
                   />
+                  <span className="budget-hint" id="budget-hint">Введите число и нажмите Enter</span>
                 </label>
               </section>
               {budgetError && (
@@ -868,11 +873,12 @@ export default function App() {
                     </p>
                   </div>
                   <button className="btn secondary" onClick={exportPlan} disabled={busy || !!budgetError}>
-                    <ArrowDownToLine size={16} />
+                    <ArrowDownToLine aria-hidden="true" size={16} />
                     Скачать план CSV
                   </button>
                 </div>
-                <div className="table-wrap" tabIndex={0} role="region" aria-label="Таблица результатов">
+                <p className="table-hint">На узком экране прокрутите таблицу вправо.</p>
+                <div className="table-wrap" tabIndex={0} role="region" aria-label="Предлагаемый учебный план">
                   <table>
                     <thead>
                       <tr>
@@ -924,7 +930,7 @@ export default function App() {
                         <td>{a.recommendedTotal}</td>
                         <td>
                           <span className="conserved">
-                            <Check size={15} />
+                            <Check aria-hidden="true" size={15} />
                             Бюджет соблюдён
                           </span>
                         </td>
@@ -934,7 +940,7 @@ export default function App() {
                 </div>
               </section>
               <div className="notice muted">
-                <CircleHelp size={20} />
+                <CircleHelp aria-hidden="true" size={20} />
                 <span>
                   Это сценарий для обсуждения с педагогом. Он не меняет
                   официальный учебный план и не прогнозирует рост успеваемости.{" "}
@@ -953,7 +959,7 @@ export default function App() {
               <div className="data-grid">
                 <section className="panel upload-panel">
                   <span className="upload-icon">
-                    <FileSpreadsheet size={32} />
+                    <FileSpreadsheet aria-hidden="true" size={32} />
                   </span>
                   <h2>От таблицы — к картине обучения</h2>
                   <p>
@@ -966,11 +972,11 @@ export default function App() {
                     onClick={() => fileInput.current?.click()}
                     disabled={busy}
                   >
-                    <Plus size={17} />
+                    <Plus aria-hidden="true" size={17} />
                     Выбрать CSV
                   </button>
                   <a className="text-button" href="/data/template.csv" download>
-                    Скачать шаблон <ArrowDownToLine size={15} />
+                    Скачать шаблон <ArrowDownToLine aria-hidden="true" size={15} />
                   </a>
                 </section>
                 <section className="panel data-info">
@@ -981,7 +987,7 @@ export default function App() {
                     {new Set(rows.map((r) => r.student_id)).size} учеников
                   </p>
                   <div className="notice muted">
-                    <ShieldCheck size={20} />
+                    <ShieldCheck aria-hidden="true" size={20} />
                     <span>
                       Файл остаётся в памяти этой вкладки. После обновления
                       страницы открывается демо. Данные не сохраняются на
@@ -999,7 +1005,7 @@ export default function App() {
                     Восстановить демо-набор
                   </button>
                   <a className="text-button" href="/data/demo.csv" download>
-                    Скачать демо CSV <ArrowDownToLine size={15} />
+                    Скачать демо CSV <ArrowDownToLine aria-hidden="true" size={15} />
                   </a>
                 </section>
               </div>
@@ -1010,7 +1016,8 @@ export default function App() {
                     <p>Одна строка — один результат ученика по теме</p>
                   </div>
                 </div>
-                <div className="table-wrap" tabIndex={0} role="region" aria-label="Таблица результатов">
+                <p className="table-hint">На узком экране прокрутите таблицу вправо.</p>
+                <div className="table-wrap" tabIndex={0} role="region" aria-label="Структура CSV">
                   <table>
                     <thead>
                       <tr>
@@ -1120,7 +1127,7 @@ export default function App() {
             )}
           <footer>
             <span>
-              <BookOpen size={14} />
+              <BookOpen aria-hidden="true" size={14} />
               OQY · Решения на основе данных
             </span>
             <span>

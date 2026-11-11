@@ -14,7 +14,8 @@
     "test:a11y": "node scripts/accessibility.mjs",
     "test:package": "node --test scripts/package.check.mjs",
     "test:strict": "node scripts/audit-browser.mjs",
-    "evidence": "node scripts/generate-evidence.mjs"
+    "evidence": "node scripts/generate-evidence.mjs",
+    "test:design": "node scripts/design-check.mjs"
   },
   "dependencies": {
     "lucide-react": "^0.468.0",

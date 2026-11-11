@@ -1,0 +1,206 @@
+{
+  "recordedAt": "2026-11-11T05:19:50.159Z",
+  "baseURL": "http://127.0.0.1:4175",
+  "browser": "156.0.8078.80",
+  "status": "pass",
+  "scope": "Keyboard disclosure/skip-link, current navigation, narrow and intermediate reflow, long imported labels, reduced motion. The 720 CSS-pixel viewport at DPR 2 models the available layout width of a 1440-pixel window at 200% zoom; it is not a native browser zoom or screen-reader certification.",
+  "checks": [
+    {
+      "name": "Skip-link bypasses navigation and moves keyboard focus to main content",
+      "status": "pass"
+    },
+    {
+      "name": "Topic details open with Enter and collapse with Space without losing focus",
+      "status": "pass"
+    },
+    {
+      "name": "Closing topic details returns keyboard focus to the originating topic",
+      "status": "pass"
+    },
+    {
+      "name": "Navigation and content reflow",
+      "status": "pass",
+      "viewport": "320x740",
+      "view": "overview",
+      "width": 320,
+      "documentWidth": 320
+    },
+    {
+      "name": "Navigation and content reflow",
+      "status": "pass",
+      "viewport": "320x740",
+      "view": "books",
+      "width": 320,
+      "documentWidth": 320
+    },
+    {
+      "name": "Navigation and content reflow",
+      "status": "pass",
+      "viewport": "320x740",
+      "view": "plan",
+      "width": 320,
+      "documentWidth": 320
+    },
+    {
+      "name": "Navigation and content reflow",
+      "status": "pass",
+      "viewport": "320x740",
+      "view": "data",
+      "width": 320,
+      "documentWidth": 320
+    },
+    {
+      "name": "Navigation and content reflow",
+      "status": "pass",
+      "viewport": "320x740",
+      "view": "method",
+      "width": 320,
+      "documentWidth": 320
+    },
+    {
+      "name": "Long labels and filename fit overview, books, plan and data",
+      "status": "pass",
+      "viewport": "320x740",
+      "labelCharacters": 200
+    },
+    {
+      "name": "Navigation and content reflow",
+      "status": "pass",
+      "viewport": "768x1024",
+      "view": "overview",
+      "width": 768,
+      "documentWidth": 768
+    },
+    {
+      "name": "Navigation and content reflow",
+      "status": "pass",
+      "viewport": "768x1024",
+      "view": "books",
+      "width": 768,
+      "documentWidth": 768
+    },
+    {
+      "name": "Navigation and content reflow",
+      "status": "pass",
+      "viewport": "768x1024",
+      "view": "plan",
+      "width": 768,
+      "documentWidth": 768
+    },
+    {
+      "name": "Navigation and content reflow",
+      "status": "pass",
+      "viewport": "768x1024",
+      "view": "data",
+      "width": 768,
+      "documentWidth": 768
+    },
+    {
+      "name": "Navigation and content reflow",
+      "status": "pass",
+      "viewport": "768x1024",
+      "view": "method",
+      "width": 768,
+      "documentWidth": 768
+    },
+    {
+      "name": "Long labels and filename fit overview, books, plan and data",
+      "status": "pass",
+      "viewport": "768x1024",
+      "labelCharacters": 200
+    },
+    {
+      "name": "Navigation and content reflow",
+      "status": "pass",
+      "viewport": "1024x768",
+      "view": "overview",
+      "width": 1024,
+      "documentWidth": 1024
+    },
+    {
+      "name": "Navigation and content reflow",
+      "status": "pass",
+      "viewport": "1024x768",
+      "view": "books",
+      "width": 1024,
+      "documentWidth": 1024
+    },
+    {
+      "name": "Navigation and content reflow",
+      "status": "pass",
+      "viewport": "1024x768",
+      "view": "plan",
+      "width": 1024,
+      "documentWidth": 1024
+    },
+    {
+      "name": "Navigation and content reflow",
+      "status": "pass",
+      "viewport": "1024x768",
+      "view": "data",
+      "width": 1024,
+      "documentWidth": 1024
+    },
+    {
+      "name": "Navigation and content reflow",
+      "status": "pass",
+      "viewport": "1024x768",
+      "view": "method",
+      "width": 1024,
+      "documentWidth": 1024
+    },
+    {
+      "name": "Long labels and filename fit overview, books, plan and data",
+      "status": "pass",
+      "viewport": "1024x768",
+      "labelCharacters": 200
+    },
+    {
+      "name": "Navigation and content reflow",
+      "status": "pass",
+      "viewport": "720x450@2x",
+      "view": "overview",
+      "width": 720,
+      "documentWidth": 720
+    },
+    {
+      "name": "Navigation and content reflow",
+      "status": "pass",
+      "viewport": "720x450@2x",
+      "view": "books",
+      "width": 720,
+      "documentWidth": 720
+    },
+    {
+      "name": "Navigation and content reflow",
+      "status": "pass",
+      "viewport": "720x450@2x",
+      "view": "plan",
+      "width": 720,
+      "documentWidth": 720
+    },
+    {
+      "name": "Navigation and content reflow",
+      "status": "pass",
+      "viewport": "720x450@2x",
+      "view": "data",
+      "width": 720,
+      "documentWidth": 720
+    },
+    {
+      "name": "Navigation and content reflow",
+      "status": "pass",
+      "viewport": "720x450@2x",
+      "view": "method",
+      "width": 720,
+      "documentWidth": 720
+    },
+    {
+      "name": "Long labels and filename fit overview, books, plan and data",
+      "status": "pass",
+      "viewport": "720x450@2x",
+      "labelCharacters": 200
+    }
+  ],
+  "pageErrors": []
+}

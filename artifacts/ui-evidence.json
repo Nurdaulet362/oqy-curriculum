@@ -2,7 +2,11 @@
   "contract": "docs/DESIGN.md — кабинет методиста: загрузить CSV → источник и фильтры → показатели → темы → сравнение → план → экспорт. Пять рабочих экранов, desktop1440x900 и mobile390x844.",
   "targetViewports": [
     "1440x900",
-    "390x844"
+    "390x844",
+    "320x740",
+    "768x1024",
+    "1024x768",
+    "720x450@2x"
   ],
   "accessibility": {
     "status": "pass",
@@ -10,7 +14,7 @@
   },
   "responsive": {
     "status": "pass",
-    "evidence": "Пять экранов проверены при ширине 1440 и 390, document.scrollWidth не превышает viewport; подписи и графики просмотрены на снимках."
+    "evidence": "Пять экранов на шести размерах; нет переполнения документа. artifacts/accessibility.json и design-check.json. 720 CSS px при DPR2 моделирует доступную ширину1440px окна при200%zoom, не настоящий browser zoom."
   },
   "contentStates": {
     "loading": {
@@ -49,5 +53,18 @@
       "artifact": "mobile.png",
       "observation": "Карточки перестроены в2 колонки, график и рекомендация вертикально; навигация прокручивается, страница не выходит за экран; просмотрено основным агентом."
     }
-  ]
+  ],
+  "recordedAt": "2026-11-11T05:20:36.905712+00:00",
+  "sourceSha256": {
+    "src/App.tsx": "49c3a45155e15d7fe422010a277fd9ab368bab80e1f08dc08a17c02946ce9a3c",
+    "src/styles.css": "3c57b999efa771b38f285f834cbaf237399e5e2147ef9d63b65e5b6dbd93e50c"
+  },
+  "designInteraction": {
+    "status": "pass",
+    "evidence": "27 проверок на production4175: skip-link, раскрытие и закрытие тем с клавиатуры, возврат фокуса, активная навигация, длинные названия200символов, reduced-motion. artifacts/design-check.json."
+  },
+  "detector": {
+    "status": "reviewed-advisories",
+    "evidence": "Impeccable:0 non-advisory findings;150 советов по документированию значений палитры/типографики/скруглений, просмотрены вручную. artifacts/design-detector.json."
+  }
 }

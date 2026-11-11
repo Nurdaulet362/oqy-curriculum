@@ -1,7 +1,7 @@
 {
   "status": "pass",
-  "recordedAt": "2026-11-11T04:27:01.349Z",
-  "baseURL": "http://127.0.0.1:4180",
+  "recordedAt": "2026-11-11T05:19:34.862Z",
+  "baseURL": "http://127.0.0.1:4175",
   "browser": "156.0.8078.80",
   "scope": "Automated axe WCAG 2/2.1 A/AA checks; keyboard focus style, document overflow, navigation, loading and initial network-failure recovery. Not a complete manual accessibility certification.",
   "tags": [
@@ -23,7 +23,7 @@
         "document": 1440
       },
       "violations": [],
-      "passes": 18,
+      "passes": 20,
       "incomplete": []
     },
     {
@@ -34,7 +34,7 @@
         "document": 1440
       },
       "violations": [],
-      "passes": 23,
+      "passes": 25,
       "incomplete": []
     },
     {
@@ -45,7 +45,7 @@
         "document": 1440
       },
       "violations": [],
-      "passes": 24,
+      "passes": 28,
       "incomplete": []
     },
     {
@@ -56,7 +56,7 @@
         "document": 1440
       },
       "violations": [],
-      "passes": 20,
+      "passes": 22,
       "incomplete": []
     },
     {
@@ -67,102 +67,12 @@
         "document": 1440
       },
       "violations": [],
-      "passes": 15,
+      "passes": 17,
       "incomplete": []
     },
     {
       "viewport": "390x844",
       "view": "overview",
-      "overflow": {
-        "viewport": 390,
-        "document": 390
-      },
-      "violations": [],
-      "passes": 19,
-      "incomplete": [
-        {
-          "id": "color-contrast",
-          "impact": "serious",
-          "nodes": [
-            [
-              "nav > .nav-item:nth-child(3)"
-            ],
-            [
-              ".nav-item:nth-child(4)"
-            ],
-            [
-              ".mobile-only.nav-item:nth-child(5)"
-            ],
-            [
-              ".mobile-only[href$=\"pitch.html\"][target=\"_blank\"]"
-            ]
-          ]
-        }
-      ]
-    },
-    {
-      "viewport": "390x844",
-      "view": "books",
-      "overflow": {
-        "viewport": 390,
-        "document": 390
-      },
-      "violations": [],
-      "passes": 24,
-      "incomplete": [
-        {
-          "id": "color-contrast",
-          "impact": "serious",
-          "nodes": [
-            [
-              "nav > .nav-item:nth-child(3)"
-            ],
-            [
-              ".nav-item:nth-child(4)"
-            ],
-            [
-              ".mobile-only.nav-item:nth-child(5)"
-            ],
-            [
-              ".mobile-only[href$=\"pitch.html\"][target=\"_blank\"]"
-            ]
-          ]
-        }
-      ]
-    },
-    {
-      "viewport": "390x844",
-      "view": "plan",
-      "overflow": {
-        "viewport": 390,
-        "document": 390
-      },
-      "violations": [],
-      "passes": 25,
-      "incomplete": [
-        {
-          "id": "color-contrast",
-          "impact": "serious",
-          "nodes": [
-            [
-              ".nav-item:nth-child(1)"
-            ],
-            [
-              ".nav-item:nth-child(4)"
-            ],
-            [
-              ".mobile-only.nav-item:nth-child(5)"
-            ],
-            [
-              ".mobile-only[href$=\"pitch.html\"][target=\"_blank\"]"
-            ]
-          ]
-        }
-      ]
-    },
-    {
-      "viewport": "390x844",
-      "view": "data",
       "overflow": {
         "viewport": 390,
         "document": 390
@@ -175,6 +85,99 @@
           "impact": "serious",
           "nodes": [
             [
+              "nav > .nav-item:nth-child(3)"
+            ],
+            [
+              ".nav-item:nth-child(4)"
+            ],
+            [
+              ".mobile-only.nav-item:nth-child(5)"
+            ],
+            [
+              ".mobile-only[href$=\"pitch.html\"][target=\"_blank\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "viewport": "390x844",
+      "view": "books",
+      "overflow": {
+        "viewport": 390,
+        "document": 390
+      },
+      "violations": [],
+      "passes": 26,
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": [
+            [
+              "nav > .nav-item:nth-child(3)"
+            ],
+            [
+              ".nav-item:nth-child(4)"
+            ],
+            [
+              ".mobile-only.nav-item:nth-child(5)"
+            ],
+            [
+              ".mobile-only[href$=\"pitch.html\"][target=\"_blank\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "viewport": "390x844",
+      "view": "plan",
+      "overflow": {
+        "viewport": 390,
+        "document": 390
+      },
+      "violations": [],
+      "passes": 29,
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": [
+            [
+              "nav > .nav-item:nth-child(2)"
+            ],
+            [
+              ".nav-item:nth-child(4)"
+            ],
+            [
+              ".mobile-only.nav-item:nth-child(5)"
+            ],
+            [
+              ".mobile-only[href$=\"pitch.html\"][target=\"_blank\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "viewport": "390x844",
+      "view": "data",
+      "overflow": {
+        "viewport": 390,
+        "document": 390
+      },
+      "violations": [],
+      "passes": 23,
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": [
+            [
+              ".mobile-only.nav-item:nth-child(5)"
+            ],
+            [
               ".mobile-only[href$=\"pitch.html\"][target=\"_blank\"]"
             ]
           ]
@@ -189,12 +192,15 @@
         "document": 390
       },
       "violations": [],
-      "passes": 16,
+      "passes": 18,
       "incomplete": [
         {
           "id": "color-contrast",
           "impact": "serious",
           "nodes": [
+            [
+              "button:nth-child(4)"
+            ],
             [
               ".mobile-only[href$=\"pitch.html\"][target=\"_blank\"]"
             ]
@@ -208,21 +214,33 @@
       "viewport": "1440x900",
       "check": "keyboard focus indicator",
       "tag": "A",
-      "text": "oqy.",
-      "outline": "rgb(145, 180, 107) solid 3px",
+      "text": "Перейти к содержимому",
+      "outline": "rgb(68, 107, 56) solid 3px",
       "visible": true
     },
     {
       "viewport": "390x844",
       "check": "keyboard focus indicator",
       "tag": "A",
-      "text": "oqy.",
-      "outline": "rgb(145, 180, 107) solid 3px",
+      "text": "Перейти к содержимому",
+      "outline": "rgb(68, 107, 56) solid 3px",
       "visible": true
     },
     {
       "viewport": "390x844",
+      "view": "books",
+      "check": "keyboard horizontal table scroll",
+      "status": "pass"
+    },
+    {
+      "viewport": "390x844",
       "view": "plan",
+      "check": "keyboard horizontal table scroll",
+      "status": "pass"
+    },
+    {
+      "viewport": "390x844",
+      "view": "data",
       "check": "keyboard horizontal table scroll",
       "status": "pass"
     },

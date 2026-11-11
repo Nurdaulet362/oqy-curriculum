@@ -25,3 +25,4 @@ jobs:
           OQY_BASE_URL=http://127.0.0.1:4173 npm run test:e2e
           OQY_BASE_URL=http://127.0.0.1:4173 npm run test:strict
           OQY_BASE_URL=http://127.0.0.1:4173 npm run test:a11y
+          OQY_BASE_URL=http://127.0.0.1:4173 npm run test:design
