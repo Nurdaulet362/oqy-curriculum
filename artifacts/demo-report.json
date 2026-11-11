@@ -4,9 +4,9 @@
     "file": "public/data/demo.csv",
     "synthetic": true,
     "description": "Сохранённый результат на синтетических данных; не результаты реальных школьников.",
-    "generatedAt": "2026-11-11T05:38:00.080Z",
+    "generatedAt": "2026-11-11T05:51:41.786Z",
     "sha256": "9eba19d08c4e37babba1c44c9e517d4708e41aac593dcadfd51610a097d9dab9",
-    "engineSha256": "d1d4398784b8612ffaec1218772d12b03c7082400f92ec67f8cd26cc48c8c90c",
+    "engineSha256": "476a33a4ae1d65e270da467563bd29548461394fcf29c3f3fe4e27ce68703dd4",
     "parserSha256": "d2b1ef041a2dc6546201c759968a52341e1746e29870a6706a9670b3c182d442",
     "filters": {
       "subject": "Математика",
@@ -175,8 +175,93 @@
       "mastery": "share of rows >=70%",
       "distribution": "normalized observations; Type 7 quartiles; population standard deviation (divisor n); bins [0,20),[20,40),[40,60),[60,80),[80,100]",
       "books": "equal-weight mean over common topics",
-      "hours": "minimum1 + largest remainders; weight=currentHours*(1+3*(100-mean)/100)",
+      "hours": "reserve topic minima (default 1); distribute remaining hours by largest remainders; weight=currentHours*(1+3*(100-mean)/100)",
       "limitations": "Descriptive, synthetic; no causal efficacy or educational outcome claim."
+    },
+    "planningExample": {
+      "budgetHours": 34,
+      "minimumTotal": 14,
+      "recommendedTotal": 34,
+      "topics": [
+        {
+          "topic": "Дроби",
+          "currentHours": 6,
+          "recommendedHours": 13,
+          "delta": 7,
+          "allocation": {
+            "minimumHours": 9,
+            "weight": 14.712500000003999,
+            "extraQuota": 4.330589155132712,
+            "extraWholeHours": 4,
+            "remainderHour": 0
+          }
+        },
+        {
+          "topic": "Линейные уравнения",
+          "currentHours": 7,
+          "recommendedHours": 6,
+          "delta": -1,
+          "allocation": {
+            "minimumHours": 1,
+            "weight": 16.070833333324,
+            "extraQuota": 4.730411320116859,
+            "extraWholeHours": 4,
+            "remainderHour": 1
+          }
+        },
+        {
+          "topic": "Проценты",
+          "currentHours": 5,
+          "recommendedHours": 4,
+          "delta": -1,
+          "allocation": {
+            "minimumHours": 1,
+            "weight": 10.189583333329999,
+            "extraQuota": 2.999279461588984,
+            "extraWholeHours": 2,
+            "remainderHour": 1
+          }
+        },
+        {
+          "topic": "Степени",
+          "currentHours": 5,
+          "recommendedHours": 4,
+          "delta": -1,
+          "allocation": {
+            "minimumHours": 1,
+            "weight": 9.254166666665,
+            "extraQuota": 2.723941805025604,
+            "extraWholeHours": 2,
+            "remainderHour": 1
+          }
+        },
+        {
+          "topic": "Геометрические фигуры",
+          "currentHours": 6,
+          "recommendedHours": 4,
+          "delta": -2,
+          "allocation": {
+            "minimumHours": 1,
+            "weight": 10.199999999994,
+            "extraQuota": 3.0023455824853476,
+            "extraWholeHours": 3,
+            "remainderHour": 0
+          }
+        },
+        {
+          "topic": "Статистика",
+          "currentHours": 5,
+          "recommendedHours": 3,
+          "delta": -2,
+          "allocation": {
+            "minimumHours": 1,
+            "weight": 7.519791666665,
+            "extraQuota": 2.2134326756504974,
+            "extraWholeHours": 2,
+            "remainderHour": 0
+          }
+        }
+      ]
     }
   },
   "analysis": {
@@ -254,9 +339,16 @@
         "students": 144,
         "mastery": 9.027777777777777,
         "currentHours": 6,
+        "priority": "medium",
         "recommendedHours": 7,
         "delta": 1,
-        "priority": "medium"
+        "allocation": {
+          "minimumHours": 1,
+          "weight": 14.712500000003999,
+          "extraQuota": 6.062824817185796,
+          "extraWholeHours": 6,
+          "remainderHour": 0
+        }
       },
       {
         "topic": "Линейные уравнения",
@@ -296,9 +388,16 @@
         "students": 144,
         "mastery": 15.277777777777779,
         "currentHours": 7,
+        "priority": "medium",
         "recommendedHours": 8,
         "delta": 1,
-        "priority": "medium"
+        "allocation": {
+          "minimumHours": 1,
+          "weight": 16.070833333324,
+          "extraQuota": 6.622575848163603,
+          "extraWholeHours": 6,
+          "remainderHour": 1
+        }
       },
       {
         "topic": "Проценты",
@@ -338,9 +437,16 @@
         "students": 144,
         "mastery": 35.41666666666667,
         "currentHours": 5,
+        "priority": "medium",
         "recommendedHours": 5,
         "delta": 0,
-        "priority": "medium"
+        "allocation": {
+          "minimumHours": 1,
+          "weight": 10.189583333329999,
+          "extraQuota": 4.198991246224577,
+          "extraWholeHours": 4,
+          "remainderHour": 0
+        }
       },
       {
         "topic": "Степени",
@@ -380,9 +486,16 @@
         "students": 144,
         "mastery": 61.80555555555556,
         "currentHours": 5,
+        "priority": "low",
         "recommendedHours": 5,
         "delta": 0,
-        "priority": "low"
+        "allocation": {
+          "minimumHours": 1,
+          "weight": 9.254166666665,
+          "extraQuota": 3.8135185270358454,
+          "extraWholeHours": 3,
+          "remainderHour": 1
+        }
       },
       {
         "topic": "Геометрические фигуры",
@@ -422,9 +535,16 @@
         "students": 144,
         "mastery": 78.47222222222221,
         "currentHours": 6,
+        "priority": "low",
         "recommendedHours": 5,
         "delta": -1,
-        "priority": "low"
+        "allocation": {
+          "minimumHours": 1,
+          "weight": 10.199999999994,
+          "extraQuota": 4.2032838154794865,
+          "extraWholeHours": 4,
+          "remainderHour": 0
+        }
       },
       {
         "topic": "Статистика",
@@ -464,9 +584,16 @@
         "students": 144,
         "mastery": 93.05555555555556,
         "currentHours": 5,
+        "priority": "low",
         "recommendedHours": 4,
         "delta": -1,
-        "priority": "low"
+        "allocation": {
+          "minimumHours": 1,
+          "weight": 7.519791666665,
+          "extraQuota": 3.098805745910696,
+          "extraWholeHours": 3,
+          "remainderHour": 0
+        }
       }
     ],
     "books": [
@@ -552,6 +679,7 @@
       }
     ],
     "totalHours": 34,
+    "minimumTotal": 6,
     "recommendedTotal": 34,
     "commonTopics": [
       "Дроби",

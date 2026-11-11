@@ -1,0 +1,76 @@
+.topic-minimum-form { padding: 0 24px 12px; }
+.topic-minimum-controls {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(128px, 160px) auto;
+  align-items: end;
+  gap: 12px;
+  max-width: 750px;
+}
+.topic-minimum-controls label {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+.topic-minimum-controls select, .topic-minimum-controls input {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid #bdc9b4;
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--green);
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+}
+.topic-minimum-controls input[aria-invalid="true"] { border-color: #a6442d; }
+.topic-minimum-applied {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 12px;
+  min-height: 44px;
+  color: var(--muted);
+  font-size: 0.8125rem;
+}
+.topic-minimum-error { margin: 0 0 8px; }
+.topic-minimum-total {
+  padding: 14px 24px;
+  border-top: 1px solid var(--line);
+  background: var(--surface-soft);
+  color: var(--green);
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+}
+.plan-required-hours { color: var(--green); font-weight: 600; }
+.plan-explanation summary {
+  width: fit-content;
+  min-height: 44px;
+  padding-block: 12px;
+  color: var(--green);
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: 550;
+}
+.plan-explanation summary:hover { text-decoration: underline; }
+.plan-explanation-body {
+  display: grid;
+  gap: 8px;
+  max-width: 35ch;
+  padding: 12px;
+  border-left: 2px solid var(--line);
+  background: var(--surface-soft);
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+.plan-explanation-body dl { display: grid; gap: 4px; margin: 0; }
+.plan-explanation-body dl > div { display: flex; justify-content: space-between; gap: 6px; }
+.plan-explanation-body dd { flex-shrink: 0; margin: 0; color: var(--green); }
+.plan-explanation-total { color: var(--green); font-weight: 650; }
+@media (max-width: 700px) {
+  .topic-minimum-form, .topic-minimum-total { padding-inline: 18px; }
+  .topic-minimum-controls { grid-template-columns: minmax(0, 1fr); }
+  .topic-minimum-controls select, .topic-minimum-controls input { font-size: 1rem; }
+}

@@ -1,12 +1,48 @@
 import { Check } from "lucide-react";
 import type { TopicStat } from "../lib/types";
 import { ResultTable, type ResultColumn } from "./ResultTable";
+import "./planning.css";
 
 const percent = new Intl.NumberFormat("ru-RU", { maximumFractionDigits: 1 });
+const decimal = new Intl.NumberFormat("ru-RU", { maximumFractionDigits: 2 });
+
+function HoursExplanation({ topic }: { topic: TopicStat }) {
+  const { minimumHours, weight, extraQuota, extraWholeHours, remainderHour } = topic.allocation;
+  const change = topic.delta === 0
+    ? `План сохраняет текущие ${topic.currentHours} ч.`
+    : `Переход с ${topic.currentHours} до ${topic.recommendedHours} ч. (${topic.delta > 0 ? "+" : "−"}${Math.abs(topic.delta)} ч.).`;
+  return (
+    <details className="plan-explanation">
+      <summary aria-label={`Как рассчитано для темы «${topic.topic}»`}>Как рассчитано</summary>
+      <div className="plan-explanation-body">
+        <p>{change}</p>
+        <p>
+          При результате {percent.format(topic.mean)}% и текущих {topic.currentHours} ч. вес темы — {decimal.format(weight)}.
+          При тех же текущих часах более низкий результат даёт больший вес.
+        </p>
+        <dl>
+          <div><dt>Минимум</dt><dd>{minimumHours} ч.</dd></div>
+          <div><dt>Из остатка бюджета</dt><dd>{extraWholeHours} ч.</dd></div>
+          <div><dt>За дробный остаток</dt><dd>{remainderHour} ч.</dd></div>
+        </dl>
+        <p>Доля свободных часов по весу — около {decimal.format(extraQuota)} ч. Сначала засчитывается целая часть. После этого свободные часы получают темы с наибольшей дробной частью.</p>
+        <p className="plan-explanation-total">{minimumHours} + {extraWholeHours} + {remainderHour} = {topic.recommendedHours} ч.</p>
+      </div>
+    </details>
+  );
+}
+
 const columns: ResultColumn<TopicStat>[] = [
   {
     id: "topic", label: "Тема программы", value: (topic) => topic.topic, text: true,
-    render: (topic) => <><strong>{topic.topic}</strong><small className="table-sub">{topic.count} результатов</small></>,
+    render: (topic) => (
+      <>
+        <strong>{topic.topic}</strong>
+        <small className="table-sub">{topic.count} результатов</small>
+        {topic.allocation.minimumHours > 1 && <small className="table-sub plan-required-hours">Минимум {topic.allocation.minimumHours} ч.</small>}
+        <HoursExplanation topic={topic} />
+      </>
+    ),
   },
   {
     id: "mean", label: "Результат", value: (topic) => topic.mean,

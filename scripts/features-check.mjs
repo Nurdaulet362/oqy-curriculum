@@ -267,6 +267,150 @@ try {
   expect(data.analysis.books.every(b => b.distribution.count === 1000)).toBe(true);
   expect(data.analysis.distribution.bins.reduce((sum, bin) => sum + bin.count, 0)).toBe(20000);
   mark('20,000-row browser import, table search and export remain usable', { elapsedMs: Math.round(performance.now() - largeStarted), observations: 20000, uniqueStudents: 100, topics: 200, books: 20, note: 'Generous 30-second action timeout; smoke evidence, not a performance SLA.' });
+
+  await page.goto(baseURL);
+  await expect(page.locator('.metric').first().locator('strong')).toHaveText('144');
+  await nav('Планирование часов');
+  const budget = page.getByLabel('Бюджет часов', { exact: true });
+  const minimumTopic = page.getByRole('combobox', { name: 'Тема для минимума', exact: true });
+  const minimum = page.getByLabel('Минимум часов', { exact: true });
+  const minimumError = page.locator('.topic-minimum-error');
+  const applyMinimum = async (value) => {
+    await minimum.fill(value);
+    await page.getByRole('button', { name: 'Применить минимум', exact: true }).click();
+  };
+  const planHours = () => page.locator('tbody tr').evaluateAll(rows =>
+    rows.map(row => Number(row.cells[3].textContent)),
+  );
+  const explanation = topic => page.getByLabel(`Как рассчитано для темы «${topic}»`, { exact: true });
+  const defaultHours = [7, 8, 5, 5, 5, 4];
+  const constrainedHours = [13, 6, 4, 4, 4, 3];
+  await expect(budget).toHaveValue('34');
+  await expect.poll(planHours).toEqual(defaultHours);
+  const explanations = [
+    ['Дроби', '1 + 6 + 0 = 7'],
+    ['Линейные уравнения', '1 + 6 + 1 = 8'],
+    ['Проценты', '1 + 4 + 0 = 5'],
+    ['Степени', '1 + 3 + 1 = 5'],
+    ['Геометрические фигуры', '1 + 4 + 0 = 5'],
+    ['Статистика', '1 + 3 + 0 = 4'],
+  ];
+  // Expected splits were computed independently from demo.csv using exact fractions.
+  for (const [topic, sum] of explanations) {
+    const trigger = explanation(topic);
+    const details = trigger.locator('..');
+    await expect(details).not.toHaveAttribute('open', '');
+    await trigger.press('Enter');
+    await expect(details).toHaveAttribute('open', '');
+    await expect(details).toContainText(sum);
+    await trigger.press('Space');
+    await expect(details).not.toHaveAttribute('open', '');
+    await expect(trigger).toBeFocused();
+  }
+  mark('each default plan row explains its exact hours and supports keyboard disclosure', { explanations });
+
+  await minimumTopic.selectOption({ label: 'Дроби' });
+  await expect(minimum).toHaveValue('1');
+  await applyMinimum('9');
+  await expect.poll(planHours).toEqual(constrainedHours);
+  await expect(page.locator('tfoot td').nth(3)).toHaveText('34');
+  await explanation('Дроби').press('Enter');
+  await expect(explanation('Дроби').locator('..')).toContainText('9 + 4 + 0 = 13');
+  data = await exported();
+  expect(data.analysis.minimumTotal).toBe(14);
+  expect(data.analysis.recommendedTotal).toBe(34);
+  expect(data.analysis.topics.map(topic => topic.recommendedHours)).toEqual(constrainedHours);
+  const fractions = data.analysis.topics.find(topic => topic.topic === 'Дроби');
+  expect(fractions.allocation.minimumHours).toBe(9);
+  expect(fractions.allocation.weight).toBeCloseTo(14.7125, 9);
+  expect(fractions.allocation.extraQuota).toBeCloseTo(4.33058915513, 9);
+  expect(fractions.allocation.extraWholeHours).toBe(4);
+  expect(fractions.allocation.remainderHour).toBe(0);
+  for (const { allocation, recommendedHours } of data.analysis.topics) {
+    expect(allocation.minimumHours + allocation.extraWholeHours + allocation.remainderHour).toBe(recommendedHours);
+  }
+  const constrainedCSV = (await downloadText('Скачать план CSV')).replace(/^\uFEFF/, '').trim().split('\n');
+  expect(constrainedCSV[0]).toBe('topic,mean_percent,current_hours,recommended_hours,delta');
+  expect(constrainedCSV.slice(1).map(line => Number(line.split(',').at(-2)))).toEqual(constrainedHours);
+  mark('9-hour topic minimum affects the full 34-hour plan and exported explanation', { recommendedHours: constrainedHours, minimumTotal: 14 });
+
+  for (const invalid of ['0', '2.5', '30']) {
+    await applyMinimum(invalid);
+    await expect(minimumError).toBeVisible();
+    await expect(minimum).toHaveAttribute('aria-invalid', 'true');
+    await expect.poll(planHours).toEqual(constrainedHours);
+  }
+  mark('zero, fractional and infeasible minimum edits preserve the applied plan');
+
+  await budget.fill('13');
+  await budget.press('Enter');
+  await expect(page.getByRole('alert').filter({ hasText: 'Введите целое число от 14' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Скачать отчёт', exact: true })).toBeDisabled();
+  await expect(page.getByRole('button', { name: 'Скачать план CSV', exact: true })).toBeDisabled();
+  await expect.poll(planHours).toEqual(constrainedHours);
+  await budget.fill('34');
+  await budget.press('Enter');
+  await expect(budget).toHaveAttribute('aria-invalid', 'false');
+  await expect(page.getByRole('button', { name: 'Скачать отчёт', exact: true })).toBeEnabled();
+  mark('infeasible budget is rejected and corrected budget restores export');
+
+  await applyMinimum('29');
+  await expect(minimumError).toHaveCount(0);
+  await expect.poll(planHours).toEqual([29, 1, 1, 1, 1, 1]);
+  await expect(page.locator('tfoot td').nth(3)).toHaveText('34');
+  mark('budget equal to the sum of topic minimums distributes zero extra hours');
+
+  await page.getByRole('button', { name: 'Вернуть 1 час', exact: true }).click();
+  await expect(minimum).toHaveValue('1');
+  await expect(minimum).toBeFocused();
+  await expect.poll(planHours).toEqual(defaultHours);
+  mark('returning a topic minimum to one hour restores the original allocation');
+
+  await applyMinimum('9');
+  await expect.poll(planHours).toEqual(constrainedHours);
+  const details = explanation('Дроби').locator('..');
+  if ((await details.getAttribute('open')) === null) await explanation('Дроби').press('Enter');
+  await page.setViewportSize({ width: 320, height: 950 });
+  await expect(details).toHaveAttribute('open', '');
+  await expect(minimum).toBeVisible();
+  const planOverflow = await page.evaluate(() => ({ viewport: innerWidth, document: document.documentElement.scrollWidth }));
+  expect(planOverflow.document).toBeLessThanOrEqual(planOverflow.viewport);
+  const planAxe = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
+  expect(planAxe.violations.map(v => ({ id: v.id, targets: v.nodes.map(n => n.target) }))).toEqual([]);
+  mark('open explanation and topic minimum editor fit 320px and pass axe', { overflow: planOverflow, axePasses: planAxe.passes.length });
+  await page.setViewportSize({ width: 1440, height: 1000 });
+
+  await minimumTopic.selectOption({ label: 'Статистика' });
+  await expect(minimum).toHaveValue('1');
+  await applyMinimum('5');
+  await expect(page.locator('.topic-minimum-total')).toContainText('18 ч.');
+  data = await exported();
+  expect(data.analysis.minimumTotal).toBe(18);
+  expect(data.analysis.recommendedTotal).toBe(34);
+  expect(data.analysis.topics.find(topic => topic.topic === 'Дроби').allocation.minimumHours).toBe(9);
+  expect(data.analysis.topics.find(topic => topic.topic === 'Статистика').allocation.minimumHours).toBe(5);
+  expect(data.analysis.topics.every(topic => topic.recommendedHours >= topic.allocation.minimumHours)).toBe(true);
+  mark('setting a second topic minimum preserves the first and reserves both');
+
+  await page.getByLabel('Школа', { exact: true }).selectOption({ label: 'Школа 01' });
+  await minimumTopic.selectOption({ label: 'Дроби' });
+  await expect(minimum).toHaveValue('1');
+  data = await exported();
+  expect(data.analysis.minimumTotal).toBe(6);
+  expect(data.analysis.topics.every(topic => topic.allocation.minimumHours === 1)).toBe(true);
+  await applyMinimum('9');
+  await expect(minimumError).toHaveCount(0);
+  await expect(page.getByRole('button', { name: 'Вернуть 1 час', exact: true })).toBeVisible();
+  await upload(path.join(root, 'public/data/template.xlsx'));
+  await nav('Планирование часов');
+  await minimumTopic.selectOption({ label: 'Дроби' });
+  await expect(minimum).toHaveValue('1');
+  data = await exported();
+  expect(data.analysis.students).toBe(1);
+  expect(data.analysis.minimumTotal).toBe(6);
+  expect(data.analysis.topics.every(topic => topic.allocation.minimumHours === 1)).toBe(true);
+  mark('school switch and new workbook reset topic minimums for the active selection');
+
   expect(runtimeErrors).toEqual([]);
   await rm(path.join(out, 'feature-failure.png'), { force: true });
   report.status = 'pass';

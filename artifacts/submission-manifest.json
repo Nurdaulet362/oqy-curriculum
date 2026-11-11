@@ -3,13 +3,13 @@
   "files": [
     {
       "path": "artifacts/OQY-pitch.pdf",
-      "bytes": 315553,
-      "sha256": "ad3b46e0c97268a7261b7d6ddf6a85e92f66bd28a6ee40fa7b9e8eeb19a2c824"
+      "bytes": 317195,
+      "sha256": "198bb5c999b62523821289febf0b8d563f3192ce9d0e4dd96fd4e451bc22b306"
     },
     {
       "path": "artifacts/demo-report.json",
-      "bytes": 13656,
-      "sha256": "6b55ac8723d559b0ff9be7a906f8fbabf5029feace5fc27fbdff5250fdfe80ed"
+      "bytes": 17330,
+      "sha256": "7757c4a76929e5cf08c44a0bd1c9658c28dded8b0a45a0525ca1ec952eb3715b"
     },
     {
       "path": "artifacts/demo-plan.csv",
@@ -23,13 +23,13 @@
     },
     {
       "path": "public/pitch.html",
-      "bytes": 15641,
-      "sha256": "47499c63391c56c1b978783ce408554dff2127ab88601bdecc316dd2ea2350ac"
+      "bytes": 15764,
+      "sha256": "5f1016e4ec8df083c7e0ce20f9db6f54b8e8d0b1e7b8ec58449a74824fbf383d"
     },
     {
       "path": "src/lib/analytics.ts",
-      "bytes": 9207,
-      "sha256": "d1d4398784b8612ffaec1218772d12b03c7082400f92ec67f8cd26cc48c8c90c"
+      "bytes": 10453,
+      "sha256": "476a33a4ae1d65e270da467563bd29548461394fcf29c3f3fe4e27ce68703dd4"
     },
     {
       "path": "src/lib/csv.ts",
@@ -38,8 +38,8 @@
     },
     {
       "path": "src/lib/types.ts",
-      "bytes": 1576,
-      "sha256": "9b4fb0a97dba5c633ccf9a439cf1adc12e59ea6432b57e02e5d6563be0726690"
+      "bytes": 1746,
+      "sha256": "2fc6cdfe357f7846224e63abe7cfa4f713cb1e3e9d0b5cdff6c80c42d925be30"
     },
     {
       "path": "src/lib/excel.ts",
@@ -73,8 +73,8 @@
     },
     {
       "path": "src/App.tsx",
-      "bytes": 52201,
-      "sha256": "d32676008d9da9eb62cc47cde295d2c912cab08b98965a0d3479044687e63726"
+      "bytes": 54146,
+      "sha256": "d5bddee627a67762f134c5530cadef6b732f3c18c3961d62df45d6bf47a9c85c"
     },
     {
       "path": "src/components/DistributionSummary.tsx",
@@ -88,8 +88,8 @@
     },
     {
       "path": "src/components/PlanTable.tsx",
-      "bytes": 2121,
-      "sha256": "dffec41cc4183631d03366f0f61b9684992ea574bc5c9b389c7b7374af807e4e"
+      "bytes": 4214,
+      "sha256": "958cfb63f6354632ea51f165b801ed07f3898c354660de356ba817a8c9b17332"
     },
     {
       "path": "src/components/BookComparisonTable.tsx",
@@ -98,23 +98,33 @@
     },
     {
       "path": "artifacts/features-check.json",
-      "bytes": 15380,
-      "sha256": "d361bafa0c91dabe3ab78e71bbf200ca2d2806d7c8c48db1cb8d4ecf3f663a7e"
+      "bytes": 17269,
+      "sha256": "263ae8cfa2f126e3b9cef856fff92b624e8d37037eb65d2bafb7cca82a827fe2"
     },
     {
       "path": "docs/VALIDATION.md",
-      "bytes": 13296,
-      "sha256": "1a0d4a72679fd1eb0c878cd0ce80587c5bbf22e6809fda6ba951ed76b171ba7f"
+      "bytes": 14726,
+      "sha256": "320a326c8b92e79ae7015df11501da82ebdc58402fc735effee4947ad69eaaae"
     },
     {
       "path": "docs/FEATURE-UPDATE.md",
-      "bytes": 4913,
-      "sha256": "7f2a02c1296c8ea62893ca87d18ffe894dac62f3699bbb78da2bb7b21234084e"
+      "bytes": 6302,
+      "sha256": "8b2a862ea3d9f2c719d0cb3c67243cc2f4799f66c63eb420656db03c44093f61"
     },
     {
       "path": "public/THIRD-PARTY-NOTICES.txt",
       "bytes": 17186,
       "sha256": "447240faedc645ef199a2db45f8c484e21d06a2db8a1440784d4eaa043ca5830"
+    },
+    {
+      "path": "src/components/TopicMinimums.tsx",
+      "bytes": 3910,
+      "sha256": "7013929e779a50a2f113a21c40bdc89e5a5567ee75cb45c0e0e22322b9a2b29f"
+    },
+    {
+      "path": "src/components/planning.css",
+      "bytes": 2206,
+      "sha256": "f9a8ec6aafe58aca4603e922a727a023baad3aa58b5098541eac768fe03c7941"
     }
   ],
   "submission": "Participant submits form; no receipt claimed",

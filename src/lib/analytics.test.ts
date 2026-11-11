@@ -70,6 +70,7 @@ describe("transparent cohort analytics", () => {
     const result = analyze(parsed.rows);
     expect(result.totalHours).toBe(34);
     expect(result.recommendedTotal).toBe(result.totalHours);
+    expect(result.topics.map((topic) => topic.recommendedHours)).toEqual([7, 8, 5, 5, 5, 4]);
     expect(result.topics.some((topic) => topic.delta > 0)).toBe(true);
     expect(result.topics.some((topic) => topic.delta < 0)).toBe(true);
     expect(result.topics.reduce((sum, topic) => sum + topic.delta, 0)).toBe(0);
@@ -121,6 +122,63 @@ describe("transparent cohort analytics", () => {
       analyze([row("1", "X", 5), row("2", "X", 5, "A", 6)]),
     ).toThrow();
     expect(() => analyze([row("1", "X", NaN)])).toThrow();
+  });
+});
+
+describe("minimum hours and allocation explanations", () => {
+  const rows = [row("1", "Hard", 5), row("1", "Easy", 10)];
+
+  it("reserves the requested minimum before distributing the remaining budget", () => {
+    const result = analyze(rows, 10, new Map([["Easy", 5]]));
+    const [hard, easy] = result.topics;
+    expect(result.minimumTotal).toBe(6);
+    expect(result.recommendedTotal).toBe(10);
+    expect([hard.recommendedHours, easy.recommendedHours]).toEqual([4, 6]);
+    expect(hard.allocation).toEqual({
+      minimumHours: 1, weight: 10, extraQuota: 40 / 14,
+      extraWholeHours: 2, remainderHour: 1,
+    });
+    expect(easy.allocation).toEqual({
+      minimumHours: 5, weight: 4, extraQuota: 16 / 14,
+      extraWholeHours: 1, remainderHour: 0,
+    });
+  });
+
+  it("returns exactly the minima when nothing remains to distribute", () => {
+    const result = analyze(rows, 8, new Map([["Hard", 3], ["Easy", 5]]));
+    expect(result.topics.map((topic) => topic.recommendedHours)).toEqual([3, 5]);
+    expect(result.topics.map((topic) => topic.allocation.extraQuota)).toEqual([0, 0]);
+    expect(result.topics.map((topic) => topic.allocation.remainderHour)).toEqual([0, 0]);
+  });
+
+  it("preserves integer totals and reconciles each explanation at varied budgets", () => {
+    const minimums = new Map([["Hard", 7], ["Easy", 3]]);
+    for (const budget of [10, 11, 12, 23, 99, 100000]) {
+      const result = analyze(rows, budget, minimums);
+      expect(result.recommendedTotal).toBe(budget);
+      for (const topic of result.topics) {
+        const { minimumHours, extraWholeHours, remainderHour } = topic.allocation;
+        expect(minimumHours).toBe(minimums.get(topic.topic));
+        expect(topic.recommendedHours).toBe(minimumHours + extraWholeHours + remainderHour);
+        expect(topic.delta).toBe(topic.recommendedHours - topic.currentHours);
+      }
+    }
+  });
+
+  it("breaks equal remainder ties in the analysis topic order", () => {
+    const equal = [row("1", "C", 5), row("1", "A", 5), row("1", "B", 5)];
+    const result = analyze(equal, 7, new Map([["A", 2], ["B", 2], ["C", 2]]));
+    expect(result.topics.map(({ topic, recommendedHours }) => [topic, recommendedHours]))
+      .toEqual([["A", 3], ["B", 2], ["C", 2]]);
+  });
+
+  it("rejects invalid or unknown minima and budgets below their sum", () => {
+    for (const invalid of [0, -1, 2.5, NaN, Infinity, 100001]) {
+      expect(() => analyze(rows, 10, new Map([["Hard", invalid]]))).toThrow(RangeError);
+    }
+    expect(() => analyze(rows, 10, new Map([["Absent", 2]]))).toThrow(RangeError);
+    expect(() => analyze([], 10, new Map([["Hard", 2]]))).toThrow(RangeError);
+    expect(() => analyze(rows, 10, new Map([["Hard", 8], ["Easy", 3]]))).toThrow(/от 11/);
   });
 });
 

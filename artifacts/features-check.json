@@ -1,5 +1,5 @@
 {
-  "started": "2026-11-11T05:37:29.083Z",
+  "started": "2026-11-11T05:49:07.576Z",
   "baseURL": "http://127.0.0.1:4175",
   "browser": "156.0.8078.80",
   "status": "pass",
@@ -285,14 +285,90 @@
     {
       "name": "20,000-row browser import, table search and export remain usable",
       "status": "pass",
-      "elapsedMs": 412,
+      "elapsedMs": 463,
       "observations": 20000,
       "uniqueStudents": 100,
       "topics": 200,
       "books": 20,
       "note": "Generous 30-second action timeout; smoke evidence, not a performance SLA."
+    },
+    {
+      "name": "each default plan row explains its exact hours and supports keyboard disclosure",
+      "status": "pass",
+      "explanations": [
+        [
+          "Дроби",
+          "1 + 6 + 0 = 7"
+        ],
+        [
+          "Линейные уравнения",
+          "1 + 6 + 1 = 8"
+        ],
+        [
+          "Проценты",
+          "1 + 4 + 0 = 5"
+        ],
+        [
+          "Степени",
+          "1 + 3 + 1 = 5"
+        ],
+        [
+          "Геометрические фигуры",
+          "1 + 4 + 0 = 5"
+        ],
+        [
+          "Статистика",
+          "1 + 3 + 0 = 4"
+        ]
+      ]
+    },
+    {
+      "name": "9-hour topic minimum affects the full 34-hour plan and exported explanation",
+      "status": "pass",
+      "recommendedHours": [
+        13,
+        6,
+        4,
+        4,
+        4,
+        3
+      ],
+      "minimumTotal": 14
+    },
+    {
+      "name": "zero, fractional and infeasible minimum edits preserve the applied plan",
+      "status": "pass"
+    },
+    {
+      "name": "infeasible budget is rejected and corrected budget restores export",
+      "status": "pass"
+    },
+    {
+      "name": "budget equal to the sum of topic minimums distributes zero extra hours",
+      "status": "pass"
+    },
+    {
+      "name": "returning a topic minimum to one hour restores the original allocation",
+      "status": "pass"
+    },
+    {
+      "name": "open explanation and topic minimum editor fit 320px and pass axe",
+      "status": "pass",
+      "overflow": {
+        "viewport": 320,
+        "document": 320
+      },
+      "axePasses": 31
+    },
+    {
+      "name": "setting a second topic minimum preserves the first and reserves both",
+      "status": "pass"
+    },
+    {
+      "name": "school switch and new workbook reset topic minimums for the active selection",
+      "status": "pass"
     }
   ],
   "runtimeErrors": [],
-  "finished": "2026-11-11T05:37:42.753Z"
+  "finished": "2026-11-11T05:49:23.931Z"
 }

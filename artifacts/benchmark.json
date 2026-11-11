@@ -1,5 +1,5 @@
 {
-  "measuredAt": "2026-11-11T05:33:24.292Z",
+  "measuredAt": "2026-11-11T05:48:12.158Z",
   "environment": {
     "node": "v26.13.0",
     "platform": "darwin",
@@ -10,7 +10,7 @@
     "synthetic": true,
     "rows": 864,
     "sha256": "9eba19d08c4e37babba1c44c9e517d4708e41aac593dcadfd51610a097d9dab9",
-    "engineSha256": "d1d4398784b8612ffaec1218772d12b03c7082400f92ec67f8cd26cc48c8c90c"
+    "engineSha256": "476a33a4ae1d65e270da467563bd29548461394fcf29c3f3fe4e27ce68703dd4"
   },
   "methodology": {
     "operation": "analyze(parsed.rows)",
@@ -21,10 +21,10 @@
     "limitation": "Local synthetic-data timing; not a production load test or evidence of educational efficacy."
   },
   "timingMs": {
-    "median": 0.998,
-    "p95": 1.7855,
-    "min": 0.8887,
-    "max": 3.0443
+    "median": 1.0875,
+    "p95": 1.5908,
+    "min": 0.9256,
+    "max": 4.5472
   },
   "metrics": {
     "students": 144,
@@ -80,9 +80,16 @@
         "students": 144,
         "mastery": 9.027777777777777,
         "currentHours": 6,
+        "priority": "medium",
         "recommendedHours": 7,
         "delta": 1,
-        "priority": "medium"
+        "allocation": {
+          "minimumHours": 1,
+          "weight": 14.712500000003999,
+          "extraQuota": 6.062824817185796,
+          "extraWholeHours": 6,
+          "remainderHour": 0
+        }
       },
       {
         "topic": "Линейные уравнения",
@@ -122,9 +129,16 @@
         "students": 144,
         "mastery": 15.277777777777779,
         "currentHours": 7,
+        "priority": "medium",
         "recommendedHours": 8,
         "delta": 1,
-        "priority": "medium"
+        "allocation": {
+          "minimumHours": 1,
+          "weight": 16.070833333324,
+          "extraQuota": 6.622575848163603,
+          "extraWholeHours": 6,
+          "remainderHour": 1
+        }
       },
       {
         "topic": "Проценты",
@@ -164,9 +178,16 @@
         "students": 144,
         "mastery": 35.41666666666667,
         "currentHours": 5,
+        "priority": "medium",
         "recommendedHours": 5,
         "delta": 0,
-        "priority": "medium"
+        "allocation": {
+          "minimumHours": 1,
+          "weight": 10.189583333329999,
+          "extraQuota": 4.198991246224577,
+          "extraWholeHours": 4,
+          "remainderHour": 0
+        }
       },
       {
         "topic": "Степени",
@@ -206,9 +227,16 @@
         "students": 144,
         "mastery": 61.80555555555556,
         "currentHours": 5,
+        "priority": "low",
         "recommendedHours": 5,
         "delta": 0,
-        "priority": "low"
+        "allocation": {
+          "minimumHours": 1,
+          "weight": 9.254166666665,
+          "extraQuota": 3.8135185270358454,
+          "extraWholeHours": 3,
+          "remainderHour": 1
+        }
       },
       {
         "topic": "Геометрические фигуры",
@@ -248,9 +276,16 @@
         "students": 144,
         "mastery": 78.47222222222221,
         "currentHours": 6,
+        "priority": "low",
         "recommendedHours": 5,
         "delta": -1,
-        "priority": "low"
+        "allocation": {
+          "minimumHours": 1,
+          "weight": 10.199999999994,
+          "extraQuota": 4.2032838154794865,
+          "extraWholeHours": 4,
+          "remainderHour": 0
+        }
       },
       {
         "topic": "Статистика",
@@ -290,9 +325,16 @@
         "students": 144,
         "mastery": 93.05555555555556,
         "currentHours": 5,
+        "priority": "low",
         "recommendedHours": 4,
         "delta": -1,
-        "priority": "low"
+        "allocation": {
+          "minimumHours": 1,
+          "weight": 7.519791666665,
+          "extraQuota": 3.098805745910696,
+          "extraWholeHours": 3,
+          "remainderHour": 0
+        }
       }
     ],
     "books": [

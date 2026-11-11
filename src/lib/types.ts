@@ -32,6 +32,13 @@ export interface TopicStat {
   currentHours: number;
   recommendedHours: number;
   delta: number;
+  allocation: {
+    minimumHours: number;
+    weight: number;
+    extraQuota: number;
+    extraWholeHours: number;
+    remainderHour: 0 | 1;
+  };
   priority: "high" | "medium" | "low";
 }
 export interface BookStat {
@@ -54,6 +61,7 @@ export interface Analysis {
   topics: TopicStat[];
   books: BookStat[];
   totalHours: number;
+  minimumTotal: number;
   recommendedTotal: number;
   commonTopics: string[];
   warnings: string[];

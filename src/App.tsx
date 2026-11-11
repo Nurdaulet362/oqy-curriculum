@@ -21,11 +21,12 @@ import {
   Users,
   X,
 } from "lucide-react";
-import { analyze } from "./lib/analytics";
+import { analyze, MAX_PLAN_HOURS } from "./lib/analytics";
 import { parseCSV, MAX_CSV_BYTES } from "./lib/csv";
 import type { Analysis, ParseResult, ResultRow } from "./lib/types";
 import type { ExcelWorkbook } from "./lib/excel";
 import { PlanTable } from "./components/PlanTable";
+import { TopicMinimums } from "./components/TopicMinimums";
 import { BookComparisonTable } from "./components/BookComparisonTable";
 import { DistributionSummary, DistributionFacts } from "./components/DistributionSummary";
 
@@ -95,6 +96,7 @@ export default function App() {
   const [grade, setGrade] = useState("");
   const [school, setSchool] = useState<string | null>(null);
   const [budget, setBudget] = useState<number | undefined>();
+  const [minimums, setMinimums] = useState<ReadonlyMap<string, number>>(() => new Map());
   const [budgetDraft, setBudgetDraft] = useState("");
   const [budgetError, setBudgetError] = useState("");
   const [error, setError] = useState<string[]>([]);
@@ -110,6 +112,11 @@ export default function App() {
   const topicTrigger = useRef<HTMLButtonElement | null>(null);
   const requestId = useRef(0);
   const demoController = useRef<AbortController | null>(null);
+  function resetPlan() {
+    setBudget(undefined);
+    setMinimums(new Map());
+    setBudgetError("");
+  }
   function install(next: ResultRow[], name: string, demo: boolean) {
     setDatasetVersion((version) => version + 1);
     setRows(next);
@@ -118,7 +125,7 @@ export default function App() {
     setSubject(next[0]?.subject ?? "");
     setGrade(next[0]?.grade ?? "");
     setSchool(null);
-    setBudget(undefined);
+    resetPlan();
     setError([]);
     setSelectedTopic(null);
     setPendingExcel(null);
@@ -250,14 +257,14 @@ export default function App() {
   }, [filtered]);
   const result = useMemo(() => {
     try {
-      return { analysis: analyze(filtered, budget), error: "" };
+      return { analysis: analyze(filtered, budget, minimums), error: "" };
     } catch (e) {
       return {
         analysis: null,
         error: e instanceof Error ? e.message : "Не удалось рассчитать план",
       };
     }
-  }, [filtered, budget]);
+  }, [filtered, budget, minimums]);
   const a = result.analysis;
   useEffect(() => {
     setBudgetDraft(String(budget ?? a?.totalHours ?? ""));
@@ -265,14 +272,37 @@ export default function App() {
   }, [budget, a?.totalHours, rows, subject, grade, school]);
   function applyBudget() {
     const n = Number(budgetDraft);
-    if (!Number.isInteger(n) || n < (a?.topics.length ?? 1) || n > 100000) {
+    const minimum = a?.minimumTotal ?? 1;
+    if (!Number.isSafeInteger(n) || n < minimum || n > MAX_PLAN_HOURS) {
       setBudgetError(
-        `Введите целое число от ${a?.topics.length ?? 1} до 100000.`,
+        `Введите целое число от ${minimum} до ${MAX_PLAN_HOURS}. Сумма минимумов должна помещаться в бюджет.`,
       );
       return;
     }
     setBudget(n);
     setBudgetError("");
+  }
+  function applyMinimum(topicName: string, draft: string): string | null {
+    const topic = a?.topics.find((item) => item.topic === topicName);
+    if (!a || !topic) return "Выберите тему из текущего набора.";
+    const minimum = Number(draft);
+    if (!Number.isSafeInteger(minimum) || minimum < 1 || minimum > MAX_PLAN_HOURS)
+      return `Введите целое число от 1 до ${MAX_PLAN_HOURS}.`;
+    const nextTotal = a.minimumTotal - topic.allocation.minimumHours + minimum;
+    if (nextTotal > a.recommendedTotal)
+      return `Сумма минимумов составит ${nextTotal} ч. при бюджете ${a.recommendedTotal} ч. Уменьшите минимум или увеличьте бюджет.`;
+
+    setMinimums((previous) => {
+      const next = new Map(previous);
+      if (minimum === 1) next.delete(topicName);
+      else next.set(topicName, minimum);
+      return next;
+    });
+    if (budgetError) {
+      setBudgetDraft(String(a.recommendedTotal));
+      setBudgetError("");
+    }
+    return null;
   }
   const weak = a?.topics.filter((t) => t.mean < 70) ?? [];
   const sorted = [...(a?.topics ?? [])].sort((x, y) => x.mean - y.mean);
@@ -290,7 +320,7 @@ export default function App() {
     setSubject(value);
     setGrade(rows.find((r) => r.subject === value)?.grade ?? "");
     setSchool(null);
-    setBudget(undefined);
+    resetPlan();
   }
   function exportPlan() {
     if (!a) return;
@@ -550,7 +580,7 @@ export default function App() {
                     onChange={(e) => {
                       setGrade(e.target.value);
                       setSchool(null);
-                      setBudget(undefined);
+                      resetPlan();
                     }}
                   >
                     {grades.map((g) => (
@@ -568,7 +598,7 @@ export default function App() {
                     value={school === null ? "" : JSON.stringify(school)}
                     onChange={(e) => {
                       setSchool(e.target.value === "" ? null : JSON.parse(e.target.value));
-                      setBudget(undefined);
+                      resetPlan();
                     }}
                   >
                     {<option value="">Все школы</option>}
@@ -606,7 +636,7 @@ export default function App() {
             <div className="notice error" role="alert">
               {result.error}
               <button
-                onClick={() => setBudget(undefined)}
+                onClick={resetPlan}
                 className="text-button"
               >
                 Сбросить бюджет
@@ -882,8 +912,8 @@ export default function App() {
                 <div>
                   <h2>Тот же ресурс. Больше внимания сложным темам.</h2>
                   <p>
-                    Минимум один час на тему. Итоговая сумма точно совпадает с
-                    бюджетом.
+                    Итоговая сумма совпадает с бюджетом. Для обязательных тем
+                    можно задать минимум часов.
                   </p>
                 </div>
                 <label className="budget-control">
@@ -894,8 +924,8 @@ export default function App() {
                     inputMode="numeric"
                     autoComplete="off"
                     type="number"
-                    min={a.topics.length}
-                    max={100000}
+                    min={a.minimumTotal}
+                    max={MAX_PLAN_HOURS}
                     step={1}
                     value={budgetDraft}
                     onChange={(e) => setBudgetDraft(e.target.value)}
@@ -914,6 +944,14 @@ export default function App() {
                   {budgetError}
                 </div>
               )}
+              <TopicMinimums
+                key={JSON.stringify([datasetVersion, subject, grade, school])}
+                topics={a.topics}
+                minimumTotal={a.minimumTotal}
+                budget={a.recommendedTotal}
+                disabled={busy}
+                onApply={applyMinimum}
+              />
               <section className="panel">
                 <div className="panel-heading">
                   <div>
@@ -1087,7 +1125,7 @@ export default function App() {
                 [
                   "04",
                   "План с фиксированным бюджетом",
-                  "Каждой теме выделяется 1 час. Остаток распределяется пропорционально весу: текущие часы × (1 + 3 × (100 − средний результат) / 100). Целые часы назначаются методом наибольших остатков.",
+                  "Сначала резервируются минимумы тем (по 1 часу, если не задан другой минимум). Остаток распределяется пропорционально весу: текущие часы × (1 + 3 × (100 − средний результат) / 100). После целых частей квот оставшиеся часы получают темы с наибольшими дробными остатками.",
                 ],
                 [
                   "05",

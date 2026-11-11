@@ -1,8 +1,8 @@
 {
   "status": "pass",
   "baseURL": "http://127.0.0.1:4175",
-  "recordedAt": "2026-11-11T05:33:25.366Z",
-  "walkthroughSeconds": 2.23,
+  "recordedAt": "2026-11-11T05:49:13.149Z",
+  "walkthroughSeconds": 1.12,
   "timingScope": "Automated functional walkthrough, includes screenshot writes and downloads; not a human speech rehearsal or performance benchmark.",
   "browser": "156.0.8078.80",
   "viewports": [
@@ -12,34 +12,34 @@
   "steps": [
     {
       "name": "overview",
-      "elapsedSeconds": 0.667,
+      "elapsedSeconds": 0.236,
       "students": 144,
       "rows": 864,
       "topics": 6
     },
     {
       "name": "topic details",
-      "elapsedSeconds": 0.81
+      "elapsedSeconds": 0.362
     },
     {
       "name": "textbook comparison",
-      "elapsedSeconds": 1.13,
+      "elapsedSeconds": 0.517,
       "books": 2,
       "commonTopics": 6
     },
     {
       "name": "default plan",
-      "elapsedSeconds": 1.203,
+      "elapsedSeconds": 0.559,
       "totalHours": 34
     },
     {
       "name": "invalid budget rejected",
-      "elapsedSeconds": 1.218,
+      "elapsedSeconds": 0.59,
       "previousBudgetRetained": 34
     },
     {
       "name": "40-hour plan",
-      "elapsedSeconds": 1.534,
+      "elapsedSeconds": 0.714,
       "proposedHours": [
         8,
         9,
@@ -51,34 +51,34 @@
     },
     {
       "name": "exports verified",
-      "elapsedSeconds": 1.662,
+      "elapsedSeconds": 0.781,
       "report": "oqy-report.json",
       "plan": "oqy-plan.csv"
     },
     {
       "name": "invalid CSV rejected",
-      "elapsedSeconds": 1.876,
+      "elapsedSeconds": 0.944,
       "previousRowsRetained": 864
     },
     {
       "name": "valid CSV imported",
-      "elapsedSeconds": 1.893,
+      "elapsedSeconds": 0.963,
       "rows": 6,
       "students": 1
     },
     {
       "name": "single textbook cannot be compared",
-      "elapsedSeconds": 1.963
+      "elapsedSeconds": 0.998
     },
     {
       "name": "demo restored",
-      "elapsedSeconds": 2.23
+      "elapsedSeconds": 1.12
     }
   ],
   "pageErrors": [],
   "exportedReport": {
     "project": "OQY",
-    "created_at": "2026-11-11T05:33:24.624Z",
+    "created_at": "2026-11-11T05:49:12.679Z",
     "source": "Демонстрационный набор",
     "filters": {
       "subject": "Математика",
@@ -161,9 +161,16 @@
           "students": 144,
           "mastery": 9.027777777777777,
           "currentHours": 6,
+          "priority": "medium",
           "recommendedHours": 8,
           "delta": 2,
-          "priority": "medium"
+          "allocation": {
+            "minimumHours": 1,
+            "weight": 14.712500000003999,
+            "extraQuota": 7.36200156372561,
+            "extraWholeHours": 7,
+            "remainderHour": 0
+          }
         },
         {
           "topic": "Линейные уравнения",
@@ -203,9 +210,16 @@
           "students": 144,
           "mastery": 15.277777777777779,
           "currentHours": 7,
+          "priority": "medium",
           "recommendedHours": 9,
           "delta": 2,
-          "priority": "medium"
+          "allocation": {
+            "minimumHours": 1,
+            "weight": 16.070833333324,
+            "extraQuota": 8.04169924419866,
+            "extraWholeHours": 8,
+            "remainderHour": 0
+          }
         },
         {
           "topic": "Проценты",
@@ -245,9 +259,16 @@
           "students": 144,
           "mastery": 35.41666666666667,
           "currentHours": 5,
+          "priority": "medium",
           "recommendedHours": 6,
           "delta": 1,
-          "priority": "medium"
+          "allocation": {
+            "minimumHours": 1,
+            "weight": 10.189583333329999,
+            "extraQuota": 5.098775084701273,
+            "extraWholeHours": 5,
+            "remainderHour": 0
+          }
         },
         {
           "topic": "Степени",
@@ -287,9 +308,16 @@
           "students": 144,
           "mastery": 61.80555555555556,
           "currentHours": 5,
+          "priority": "low",
           "recommendedHours": 6,
           "delta": 1,
-          "priority": "low"
+          "allocation": {
+            "minimumHours": 1,
+            "weight": 9.254166666665,
+            "extraQuota": 4.630701068543527,
+            "extraWholeHours": 4,
+            "remainderHour": 1
+          }
         },
         {
           "topic": "Геометрические фигуры",
@@ -329,9 +357,16 @@
           "students": 144,
           "mastery": 78.47222222222221,
           "currentHours": 6,
+          "priority": "low",
           "recommendedHours": 6,
           "delta": 0,
-          "priority": "low"
+          "allocation": {
+            "minimumHours": 1,
+            "weight": 10.199999999994,
+            "extraQuota": 5.103987490225091,
+            "extraWholeHours": 5,
+            "remainderHour": 0
+          }
         },
         {
           "topic": "Статистика",
@@ -371,9 +406,16 @@
           "students": 144,
           "mastery": 93.05555555555556,
           "currentHours": 5,
+          "priority": "low",
           "recommendedHours": 5,
           "delta": 0,
-          "priority": "low"
+          "allocation": {
+            "minimumHours": 1,
+            "weight": 7.519791666665,
+            "extraQuota": 3.762835548605845,
+            "extraWholeHours": 3,
+            "remainderHour": 1
+          }
         }
       ],
       "books": [
@@ -459,6 +501,7 @@
         }
       ],
       "totalHours": 34,
+      "minimumTotal": 6,
       "recommendedTotal": 40,
       "commonTopics": [
         "Дроби",
