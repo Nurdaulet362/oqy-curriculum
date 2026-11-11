@@ -1,0 +1,7 @@
+﻿source,subject,grade,school_filter,topic,students,mean_percent,current_hours,recommended_hours,delta_hours
+synthetic_demo,Математика,7,Все школы,Дроби,144,51.5972,6,7,1
+synthetic_demo,Математика,7,Все школы,Линейные уравнения,144,56.8056,7,8,1
+synthetic_demo,Математика,7,Все школы,Проценты,144,65.4028,5,5,0
+synthetic_demo,Математика,7,Все школы,Степени,144,71.6389,5,5,0
+synthetic_demo,Математика,7,Все школы,Геометрические фигуры,144,76.6667,6,5,-1
+synthetic_demo,Математика,7,Все школы,Статистика,144,83.2014,5,4,-1

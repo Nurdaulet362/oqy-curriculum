@@ -1,0 +1,198 @@
+{
+  "status": "pass",
+  "baseURL": "http://127.0.0.1:4173",
+  "recordedAt": "2026-11-11T04:20:24.421Z",
+  "walkthroughSeconds": 1.025,
+  "timingScope": "Automated functional walkthrough, includes screenshot writes and downloads; not a human speech rehearsal or performance benchmark.",
+  "browser": "156.0.8078.80",
+  "viewports": [
+    "1440x1000",
+    "390x844"
+  ],
+  "steps": [
+    {
+      "name": "overview",
+      "elapsedSeconds": 0.245,
+      "students": 144,
+      "rows": 864,
+      "topics": 6
+    },
+    {
+      "name": "topic details",
+      "elapsedSeconds": 0.324
+    },
+    {
+      "name": "textbook comparison",
+      "elapsedSeconds": 0.461,
+      "books": 2,
+      "commonTopics": 6
+    },
+    {
+      "name": "default plan",
+      "elapsedSeconds": 0.497,
+      "totalHours": 34
+    },
+    {
+      "name": "invalid budget rejected",
+      "elapsedSeconds": 0.529,
+      "previousBudgetRetained": 34
+    },
+    {
+      "name": "40-hour plan",
+      "elapsedSeconds": 0.622,
+      "proposedHours": [
+        8,
+        9,
+        6,
+        6,
+        6,
+        5
+      ]
+    },
+    {
+      "name": "exports verified",
+      "elapsedSeconds": 0.709,
+      "report": "oqy-report.json",
+      "plan": "oqy-plan.csv"
+    },
+    {
+      "name": "invalid CSV rejected",
+      "elapsedSeconds": 0.86,
+      "previousRowsRetained": 864
+    },
+    {
+      "name": "valid CSV imported",
+      "elapsedSeconds": 0.874,
+      "rows": 6,
+      "students": 1
+    },
+    {
+      "name": "single textbook cannot be compared",
+      "elapsedSeconds": 0.908
+    },
+    {
+      "name": "demo restored",
+      "elapsedSeconds": 1.025
+    }
+  ],
+  "pageErrors": [],
+  "exportedReport": {
+    "project": "OQY",
+    "created_at": "2026-11-11T04:20:23.976Z",
+    "source": "Демонстрационный набор",
+    "filters": {
+      "subject": "Математика",
+      "grade": "7",
+      "school": "all"
+    },
+    "limitations": "Описательная аналитика. Сравнение не доказывает причинную эффективность учебника. План — предложение для методиста.",
+    "analysis": {
+      "mean": 67.55208333333333,
+      "mastery": 48.842592592592595,
+      "students": 144,
+      "schools": 3,
+      "topics": [
+        {
+          "topic": "Дроби",
+          "mean": 51.59722222222222,
+          "count": 144,
+          "students": 144,
+          "mastery": 9.027777777777777,
+          "currentHours": 6,
+          "recommendedHours": 8,
+          "delta": 2,
+          "priority": "medium"
+        },
+        {
+          "topic": "Линейные уравнения",
+          "mean": 56.80555555555556,
+          "count": 144,
+          "students": 144,
+          "mastery": 15.277777777777779,
+          "currentHours": 7,
+          "recommendedHours": 9,
+          "delta": 2,
+          "priority": "medium"
+        },
+        {
+          "topic": "Проценты",
+          "mean": 65.40277777777777,
+          "count": 144,
+          "students": 144,
+          "mastery": 35.41666666666667,
+          "currentHours": 5,
+          "recommendedHours": 6,
+          "delta": 1,
+          "priority": "medium"
+        },
+        {
+          "topic": "Степени",
+          "mean": 71.63888888888889,
+          "count": 144,
+          "students": 144,
+          "mastery": 61.80555555555556,
+          "currentHours": 5,
+          "recommendedHours": 6,
+          "delta": 1,
+          "priority": "low"
+        },
+        {
+          "topic": "Геометрические фигуры",
+          "mean": 76.66666666666667,
+          "count": 144,
+          "students": 144,
+          "mastery": 78.47222222222221,
+          "currentHours": 6,
+          "recommendedHours": 6,
+          "delta": 0,
+          "priority": "low"
+        },
+        {
+          "topic": "Статистика",
+          "mean": 83.20138888888889,
+          "count": 144,
+          "students": 144,
+          "mastery": 93.05555555555556,
+          "currentHours": 5,
+          "recommendedHours": 5,
+          "delta": 0,
+          "priority": "low"
+        }
+      ],
+      "books": [
+        {
+          "textbook": "Оқулық A",
+          "mean": 67.99305555555556,
+          "adjustedMean": 67.99305555555556,
+          "count": 432,
+          "students": 72,
+          "topicCount": 6,
+          "comparable": true
+        },
+        {
+          "textbook": "Оқулық B",
+          "mean": 67.11111111111111,
+          "adjustedMean": 67.1111111111111,
+          "count": 432,
+          "students": 72,
+          "topicCount": 6,
+          "comparable": true
+        }
+      ],
+      "totalHours": 34,
+      "recommendedTotal": 40,
+      "commonTopics": [
+        "Дроби",
+        "Линейные уравнения",
+        "Проценты",
+        "Степени",
+        "Геометрические фигуры",
+        "Статистика"
+      ],
+      "warnings": [
+        "Сравнение наблюдательное: результаты зависят также от состава классов, учителей и условий обучения. Причинный эффект учебника не установлен.",
+        "Рекомендации по часам — прозрачная эвристика; решение принимает методист. Улучшение успеваемости не прогнозируется."
+      ]
+    }
+  }
+}

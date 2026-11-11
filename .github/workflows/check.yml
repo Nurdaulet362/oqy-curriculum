@@ -1,0 +1,23 @@
+name: Check project
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: |
+          npm run preview > /tmp/oqy-preview.log 2>&1 &
+          for i in $(seq 1 30); do curl -fsS http://127.0.0.1:4173/ >/dev/null && break || sleep 1; done
+          OQY_BASE_URL=http://127.0.0.1:4173 npm run test:e2e

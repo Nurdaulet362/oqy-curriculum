@@ -1,0 +1,263 @@
+{
+  "status": "pass",
+  "recordedAt": "2026-11-11T04:19:11.160Z",
+  "baseURL": "http://127.0.0.1:5173",
+  "browser": "156.0.8078.80",
+  "scope": "Automated axe WCAG 2/2.1 A/AA checks; keyboard focus style, document overflow, navigation, loading and initial network-failure recovery. Not a complete manual accessibility certification.",
+  "tags": [
+    "wcag2a",
+    "wcag2aa",
+    "wcag21a",
+    "wcag21aa"
+  ],
+  "targetViewports": [
+    "1440x900",
+    "390x844"
+  ],
+  "scans": [
+    {
+      "viewport": "1440x900",
+      "view": "overview",
+      "overflow": {
+        "viewport": 1440,
+        "document": 1440
+      },
+      "violations": [],
+      "passes": 18,
+      "incomplete": []
+    },
+    {
+      "viewport": "1440x900",
+      "view": "books",
+      "overflow": {
+        "viewport": 1440,
+        "document": 1440
+      },
+      "violations": [],
+      "passes": 23,
+      "incomplete": []
+    },
+    {
+      "viewport": "1440x900",
+      "view": "plan",
+      "overflow": {
+        "viewport": 1440,
+        "document": 1440
+      },
+      "violations": [],
+      "passes": 24,
+      "incomplete": []
+    },
+    {
+      "viewport": "1440x900",
+      "view": "data",
+      "overflow": {
+        "viewport": 1440,
+        "document": 1440
+      },
+      "violations": [],
+      "passes": 20,
+      "incomplete": []
+    },
+    {
+      "viewport": "1440x900",
+      "view": "method",
+      "overflow": {
+        "viewport": 1440,
+        "document": 1440
+      },
+      "violations": [],
+      "passes": 15,
+      "incomplete": []
+    },
+    {
+      "viewport": "390x844",
+      "view": "overview",
+      "overflow": {
+        "viewport": 390,
+        "document": 390
+      },
+      "violations": [],
+      "passes": 19,
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": [
+            [
+              "nav > .nav-item:nth-child(3)"
+            ],
+            [
+              ".nav-item:nth-child(4)"
+            ],
+            [
+              ".mobile-only.nav-item:nth-child(5)"
+            ],
+            [
+              ".mobile-only[href$=\"pitch.html\"][target=\"_blank\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "viewport": "390x844",
+      "view": "books",
+      "overflow": {
+        "viewport": 390,
+        "document": 390
+      },
+      "violations": [],
+      "passes": 24,
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": [
+            [
+              "nav > .nav-item:nth-child(3)"
+            ],
+            [
+              ".nav-item:nth-child(4)"
+            ],
+            [
+              ".mobile-only.nav-item:nth-child(5)"
+            ],
+            [
+              ".mobile-only[href$=\"pitch.html\"][target=\"_blank\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "viewport": "390x844",
+      "view": "plan",
+      "overflow": {
+        "viewport": 390,
+        "document": 390
+      },
+      "violations": [],
+      "passes": 25,
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": [
+            [
+              ".nav-item:nth-child(1)"
+            ],
+            [
+              ".nav-item:nth-child(4)"
+            ],
+            [
+              ".mobile-only.nav-item:nth-child(5)"
+            ],
+            [
+              ".mobile-only[href$=\"pitch.html\"][target=\"_blank\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "viewport": "390x844",
+      "view": "data",
+      "overflow": {
+        "viewport": 390,
+        "document": 390
+      },
+      "violations": [],
+      "passes": 21,
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": [
+            [
+              ".mobile-only[href$=\"pitch.html\"][target=\"_blank\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "viewport": "390x844",
+      "view": "method",
+      "overflow": {
+        "viewport": 390,
+        "document": 390
+      },
+      "violations": [],
+      "passes": 16,
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": [
+            [
+              ".mobile-only[href$=\"pitch.html\"][target=\"_blank\"]"
+            ]
+          ]
+        }
+      ]
+    }
+  ],
+  "interactionChecks": [
+    {
+      "viewport": "1440x900",
+      "check": "keyboard focus indicator",
+      "tag": "A",
+      "text": "oqy.",
+      "outline": "rgb(145, 180, 107) solid 3px",
+      "visible": true
+    },
+    {
+      "viewport": "390x844",
+      "check": "keyboard focus indicator",
+      "tag": "A",
+      "text": "oqy.",
+      "outline": "rgb(145, 180, 107) solid 3px",
+      "visible": true
+    },
+    {
+      "viewport": "390x844",
+      "view": "books",
+      "check": "keyboard horizontal table scroll",
+      "status": "pass"
+    },
+    {
+      "viewport": "390x844",
+      "view": "plan",
+      "check": "keyboard horizontal table scroll",
+      "status": "pass"
+    },
+    {
+      "viewport": "390x844",
+      "view": "data",
+      "check": "keyboard horizontal table scroll",
+      "status": "pass"
+    },
+    {
+      "viewport": "390x844",
+      "check": "mobile methodology navigation",
+      "status": "pass"
+    },
+    {
+      "check": "initial demo fetch failure",
+      "status": "pass",
+      "observation": "Error and empty state visible with retry action; no fabricated analytics."
+    },
+    {
+      "check": "empty-state retry recovery",
+      "status": "pass",
+      "observation": "Retry loads the 144-student demonstration dataset."
+    },
+    {
+      "check": "loading state and completion",
+      "status": "pass",
+      "observation": "Loading status and disabled upload shown while demo response is held; analysis appears after release."
+    }
+  ],
+  "failures": []
+}

@@ -1,0 +1,145 @@
+{
+  "measuredAt": "2026-11-11T04:13:38.024Z",
+  "environment": {
+    "node": "v26.13.0",
+    "platform": "darwin",
+    "architecture": "arm64"
+  },
+  "workload": {
+    "dataset": "public/data/demo.csv",
+    "synthetic": true,
+    "rows": 864,
+    "sha256": "9eba19d08c4e37babba1c44c9e517d4708e41aac593dcadfd51610a097d9dab9",
+    "engineSha256": "981d53edf688b1183c1ee80c0649eabafe9efa77422a4de3ef6aa25a9287b64c"
+  },
+  "methodology": {
+    "operation": "analyze(parsed.rows)",
+    "iterations": 100,
+    "warmupIterations": 20,
+    "timingScope": "Analytics only; excludes CSV parsing, browser rendering, file I/O and page startup.",
+    "percentile": "nearest rank",
+    "limitation": "Local synthetic-data timing; not a production load test or evidence of educational efficacy."
+  },
+  "timingMs": {
+    "median": 0.2585,
+    "p95": 0.3236,
+    "min": 0.2446,
+    "max": 0.4133
+  },
+  "metrics": {
+    "students": 144,
+    "schools": 3,
+    "mean": 67.5521,
+    "mastery": 48.8426,
+    "totalHours": 34,
+    "recommendedTotal": 34,
+    "commonTopics": [
+      "Дроби",
+      "Линейные уравнения",
+      "Проценты",
+      "Степени",
+      "Геометрические фигуры",
+      "Статистика"
+    ],
+    "topics": [
+      {
+        "topic": "Дроби",
+        "mean": 51.59722222222222,
+        "count": 144,
+        "students": 144,
+        "mastery": 9.027777777777777,
+        "currentHours": 6,
+        "recommendedHours": 7,
+        "delta": 1,
+        "priority": "medium"
+      },
+      {
+        "topic": "Линейные уравнения",
+        "mean": 56.80555555555556,
+        "count": 144,
+        "students": 144,
+        "mastery": 15.277777777777779,
+        "currentHours": 7,
+        "recommendedHours": 8,
+        "delta": 1,
+        "priority": "medium"
+      },
+      {
+        "topic": "Проценты",
+        "mean": 65.40277777777777,
+        "count": 144,
+        "students": 144,
+        "mastery": 35.41666666666667,
+        "currentHours": 5,
+        "recommendedHours": 5,
+        "delta": 0,
+        "priority": "medium"
+      },
+      {
+        "topic": "Степени",
+        "mean": 71.63888888888889,
+        "count": 144,
+        "students": 144,
+        "mastery": 61.80555555555556,
+        "currentHours": 5,
+        "recommendedHours": 5,
+        "delta": 0,
+        "priority": "low"
+      },
+      {
+        "topic": "Геометрические фигуры",
+        "mean": 76.66666666666667,
+        "count": 144,
+        "students": 144,
+        "mastery": 78.47222222222221,
+        "currentHours": 6,
+        "recommendedHours": 5,
+        "delta": -1,
+        "priority": "low"
+      },
+      {
+        "topic": "Статистика",
+        "mean": 83.20138888888889,
+        "count": 144,
+        "students": 144,
+        "mastery": 93.05555555555556,
+        "currentHours": 5,
+        "recommendedHours": 4,
+        "delta": -1,
+        "priority": "low"
+      }
+    ],
+    "books": [
+      {
+        "textbook": "Оқулық A",
+        "mean": 67.99305555555556,
+        "adjustedMean": 67.99305555555556,
+        "count": 432,
+        "students": 72,
+        "topicCount": 6,
+        "comparable": true
+      },
+      {
+        "textbook": "Оқулық B",
+        "mean": 67.11111111111111,
+        "adjustedMean": 67.1111111111111,
+        "count": 432,
+        "students": 72,
+        "topicCount": 6,
+        "comparable": true
+      }
+    ]
+  },
+  "validation": {
+    "acceptedRows": 864,
+    "errors": [],
+    "hoursConserved": true,
+    "integerPositiveHours": true
+  },
+  "model": {
+    "used": false,
+    "requests": 0,
+    "tokens": 0,
+    "paidResourcesLaunched": false
+  }
+}

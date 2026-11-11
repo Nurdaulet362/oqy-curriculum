@@ -1,0 +1,13 @@
+import { cpSync, mkdirSync, writeFileSync, existsSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
+const destination = 'release/OQY';
+if (!existsSync('dist/index.html')) throw new Error('Сначала выполните npm run build');
+mkdirSync(destination, { recursive: true });
+for (const item of ['dist', 'artifacts', 'docs']) cpSync(item, `${destination}/${item}`, { recursive: true });
+cpSync('README.md', `${destination}/README.md`);
+cpSync('HANDOFF.md', `${destination}/HANDOFF.md`);
+cpSync('public/pitch.html', `${destination}/presentation.html`);
+writeFileSync(`${destination}/start.py`, `from http.server import ThreadingHTTPServer, SimpleHTTPRequestHandler\nfrom pathlib import Path\nimport os, webbrowser\nfrom threading import Timer\nos.chdir(Path(__file__).resolve().parent / 'dist')\nport = 4173\ntry:\n    server = ThreadingHTTPServer(('127.0.0.1', port), SimpleHTTPRequestHandler)\nexcept OSError:\n    print('Порт 4173 занят. Закройте старый сервер и запустите снова.')\n    raise SystemExit(1)\nprint('OQY: http://127.0.0.1:4173 — Ctrl+C для остановки')\nif not os.environ.get('OQY_NO_BROWSER'):\n    Timer(1, lambda: webbrowser.open('http://127.0.0.1:4173')).start()\ntry:\n    server.serve_forever()\nexcept KeyboardInterrupt:\n    server.server_close()\n`);
+writeFileSync(`${destination}/START-HERE.txt`, `OQY — комплект для демонстрации\n\n1. Распакуйте архив.\n2. В папке OQY выполните: python3 start.py (Windows: python start.py).\n3. Откроется http://127.0.0.1:4173.\n\nНужен Python 3, интернет и Node.js для этого комплекта НЕ нужны.\nДля остановки нажмите Ctrl+C в терминале.\n\nПрезентация: artifacts/OQY-pitch.pdf или presentation.html.\nТекст защиты: docs/PITCH.md. Ответы жюри: docs/JURY_QA.md.\nЗапасной показ: artifacts/e2e-overview.png и e2e-plan.png — сохранённый демонстрационный результат, синтетические данные.\n\nИсходный код — приватный репозиторий https://github.com/Nurdaulet362/oqy-curriculum\nВесь набор демонстрационных данных вымышленный.\n`);
+execFileSync('python3', ['-c', "import shutil; shutil.make_archive('release/OQY-demo', 'zip', 'release', 'OQY')"]);
+console.log('release/OQY-demo.zip');
