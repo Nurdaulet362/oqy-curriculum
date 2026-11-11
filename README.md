@@ -6,6 +6,8 @@ OQY помогает методисту увидеть, какие темы тр
 
 **Zhambyl Hub · Кейс 1**
 
+[**Открыть демо OQY в браузере**](https://nurdaulet362.github.io/oqy-curriculum/)
+
 [Запуск](#быстрый-запуск) · [Демо за минуту](#демо-за-минуту) · [Презентация PDF](artifacts/OQY-pitch.pdf) · [Шаблон Excel](public/data/template.xlsx)
 
 ## Быстрый запуск
