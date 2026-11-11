@@ -1,3 +1,5 @@
+/// <reference types="vite/client" />
+
 import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import {
   ArrowDownToLine,
@@ -37,6 +39,7 @@ const nav = [
   { id: "plan", label: "Планирование часов", icon: Clock3 },
   { id: "data", label: "Источники данных", icon: Database },
 ] as const;
+const publicBase = import.meta.env.BASE_URL;
 const percentFormat = new Intl.NumberFormat("ru-RU", { maximumFractionDigits: 1 });
 const pct = (n: number) => percentFormat.format(n);
 function download(name: string, content: string, type: string) {
@@ -139,7 +142,7 @@ export default function App() {
     setMessage("");
     setPendingExcel(null);
     try {
-      const res = await fetch("/data/demo.csv", { signal: controller.signal });
+      const res = await fetch(`${publicBase}data/demo.csv`, { signal: controller.signal });
       if (!res.ok) throw new Error("Не удалось загрузить демо. Попробуйте ещё раз.");
       const contents = await res.text();
       if (id !== requestId.current) return;
@@ -398,7 +401,7 @@ export default function App() {
           </button>
           <a
             className="nav-item mobile-only"
-            href="/pitch.html"
+            href={`${publicBase}pitch.html`}
             target="_blank"
             rel="noreferrer"
           >
@@ -426,7 +429,7 @@ export default function App() {
           </button>
           <a
             className="nav-item"
-            href="/pitch.html"
+            href={`${publicBase}pitch.html`}
             target="_blank"
             rel="noreferrer"
           >
@@ -1007,10 +1010,10 @@ export default function App() {
                     <Plus aria-hidden="true" size={17} />
                     Выбрать файл
                   </button>
-                  <a className="text-button" href="/data/template.csv" download>
+                  <a className="text-button" href={`${publicBase}data/template.csv`} download>
                     Шаблон CSV <ArrowDownToLine aria-hidden="true" size={15} />
                   </a>
-                  <a className="text-button" href="/data/template.xlsx" download>
+                  <a className="text-button" href={`${publicBase}data/template.xlsx`} download>
                     Шаблон Excel <ArrowDownToLine aria-hidden="true" size={15} />
                   </a>
                   <p className="import-hint">ID с ведущими нулями сохраняйте в текстовом формате. Формулы замените значениями; старый формат .xls не поддерживается.</p>
@@ -1040,7 +1043,7 @@ export default function App() {
                   >
                     Восстановить демо-набор
                   </button>
-                  <a className="text-button" href="/data/demo.csv" download>
+                  <a className="text-button" href={`${publicBase}data/demo.csv`} download>
                     Скачать демо CSV <ArrowDownToLine aria-hidden="true" size={15} />
                   </a>
                 </section>

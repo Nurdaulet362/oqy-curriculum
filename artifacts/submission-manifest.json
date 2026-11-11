@@ -9,7 +9,7 @@
     {
       "path": "artifacts/demo-report.json",
       "bytes": 17330,
-      "sha256": "7757c4a76929e5cf08c44a0bd1c9658c28dded8b0a45a0525ca1ec952eb3715b"
+      "sha256": "47ca538e8a3a28ac8db5318cf8d36fec11af52e453da613041e9d1365087004d"
     },
     {
       "path": "artifacts/demo-plan.csv",
@@ -23,8 +23,8 @@
     },
     {
       "path": "public/pitch.html",
-      "bytes": 15764,
-      "sha256": "5f1016e4ec8df083c7e0ce20f9db6f54b8e8d0b1e7b8ec58449a74824fbf383d"
+      "bytes": 15765,
+      "sha256": "12598c963d7e2a208a22366923311b21472b1de475996132bead0f78f375fcfb"
     },
     {
       "path": "src/lib/analytics.ts",
@@ -73,8 +73,8 @@
     },
     {
       "path": "src/App.tsx",
-      "bytes": 54146,
-      "sha256": "d5bddee627a67762f134c5530cadef6b732f3c18c3961d62df45d6bf47a9c85c"
+      "bytes": 54312,
+      "sha256": "839101d2ff6909341e5e1e9fafbda6d08c1dd2002cfb4f25993ac5877b7daa5e"
     },
     {
       "path": "src/components/DistributionSummary.tsx",

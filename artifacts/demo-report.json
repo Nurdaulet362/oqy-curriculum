@@ -4,7 +4,7 @@
     "file": "public/data/demo.csv",
     "synthetic": true,
     "description": "Сохранённый результат на синтетических данных; не результаты реальных школьников.",
-    "generatedAt": "2026-11-11T05:51:41.786Z",
+    "generatedAt": "2026-11-11T06:41:05.134Z",
     "sha256": "9eba19d08c4e37babba1c44c9e517d4708e41aac593dcadfd51610a097d9dab9",
     "engineSha256": "476a33a4ae1d65e270da467563bd29548461394fcf29c3f3fe4e27ce68703dd4",
     "parserSha256": "d2b1ef041a2dc6546201c759968a52341e1746e29870a6706a9670b3c182d442",
