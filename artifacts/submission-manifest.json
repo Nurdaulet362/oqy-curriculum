@@ -3,13 +3,13 @@
   "files": [
     {
       "path": "artifacts/OQY-pitch.pdf",
-      "bytes": 316279,
-      "sha256": "4a8fb578419a6ee57a6f3f5217f70729efbefa530360acd90bdf78e51c5164af"
+      "bytes": 315553,
+      "sha256": "ad3b46e0c97268a7261b7d6ddf6a85e92f66bd28a6ee40fa7b9e8eeb19a2c824"
     },
     {
       "path": "artifacts/demo-report.json",
-      "bytes": 7443,
-      "sha256": "d4e51c509614f1512a05b2cb998d718bb6232aabdf5dbafd2deec3417c96571a"
+      "bytes": 13656,
+      "sha256": "6b55ac8723d559b0ff9be7a906f8fbabf5029feace5fc27fbdff5250fdfe80ed"
     },
     {
       "path": "artifacts/demo-plan.csv",
@@ -23,18 +23,98 @@
     },
     {
       "path": "public/pitch.html",
-      "bytes": 15578,
-      "sha256": "c504f656a4d9ba6e380901c9af75fefdf367af164eb90d6e116b19ba190990a5"
+      "bytes": 15641,
+      "sha256": "47499c63391c56c1b978783ce408554dff2127ab88601bdecc316dd2ea2350ac"
     },
     {
       "path": "src/lib/analytics.ts",
-      "bytes": 7712,
-      "sha256": "09b65ccff2de388193cc2cdfe68c8bbf7248f3c31ac3f8e177618e2db6f613b6"
+      "bytes": 9207,
+      "sha256": "d1d4398784b8612ffaec1218772d12b03c7082400f92ec67f8cd26cc48c8c90c"
     },
     {
       "path": "src/lib/csv.ts",
       "bytes": 7992,
       "sha256": "d2b1ef041a2dc6546201c759968a52341e1746e29870a6706a9670b3c182d442"
+    },
+    {
+      "path": "src/lib/types.ts",
+      "bytes": 1576,
+      "sha256": "9b4fb0a97dba5c633ccf9a439cf1adc12e59ea6432b57e02e5d6563be0726690"
+    },
+    {
+      "path": "src/lib/excel.ts",
+      "bytes": 4086,
+      "sha256": "6af28fdd950380f0f1c01ba3603b798e9dcc44972b88d539ae734f2b3d1e5f44"
+    },
+    {
+      "path": "src/lib/excel-reader.ts",
+      "bytes": 9551,
+      "sha256": "cb235169f4f3a4a55fe11bfdbb68e3dbdc372b3d82800c56eb6c7337a929e938"
+    },
+    {
+      "path": "src/lib/excel.worker.ts",
+      "bytes": 344,
+      "sha256": "49d5f7a9d92af9fdfa1f3566037cbb4e4b102941ffec4f66b6f9a7fd8207ead6"
+    },
+    {
+      "path": "public/data/template.xlsx",
+      "bytes": 2477,
+      "sha256": "823693a7a97b6185c459153dac370f86fcd52848c2385f62f89c322a013589df"
+    },
+    {
+      "path": "package-lock.json",
+      "bytes": 84699,
+      "sha256": "ea4ee7486d345bae699ee1704998a4e8ed4f69dec55125ac017bef0148b9d353"
+    },
+    {
+      "path": "package.json",
+      "bytes": 1376,
+      "sha256": "e80a0a158cb881c2faf8ed47c5d24daca03a33665f40045b476a1a1cd6041ff4"
+    },
+    {
+      "path": "src/App.tsx",
+      "bytes": 52201,
+      "sha256": "d32676008d9da9eb62cc47cde295d2c912cab08b98965a0d3479044687e63726"
+    },
+    {
+      "path": "src/components/DistributionSummary.tsx",
+      "bytes": 3010,
+      "sha256": "512c7c3a374984043cbd8c910a99d45910613fd42debd879ca09a39260eba130"
+    },
+    {
+      "path": "src/components/ResultTable.tsx",
+      "bytes": 6759,
+      "sha256": "1f678e24d9eec99890af2d1f9aa9ac343aa4094ec6a49f95349bde875749501e"
+    },
+    {
+      "path": "src/components/PlanTable.tsx",
+      "bytes": 2121,
+      "sha256": "dffec41cc4183631d03366f0f61b9684992ea574bc5c9b389c7b7374af807e4e"
+    },
+    {
+      "path": "src/components/BookComparisonTable.tsx",
+      "bytes": 1706,
+      "sha256": "1cd0359261079a5fb233c7ec87e0d690b1d11d34aa5c003b2524f900f198e2a3"
+    },
+    {
+      "path": "artifacts/features-check.json",
+      "bytes": 15380,
+      "sha256": "d361bafa0c91dabe3ab78e71bbf200ca2d2806d7c8c48db1cb8d4ecf3f663a7e"
+    },
+    {
+      "path": "docs/VALIDATION.md",
+      "bytes": 13296,
+      "sha256": "1a0d4a72679fd1eb0c878cd0ce80587c5bbf22e6809fda6ba951ed76b171ba7f"
+    },
+    {
+      "path": "docs/FEATURE-UPDATE.md",
+      "bytes": 4913,
+      "sha256": "7f2a02c1296c8ea62893ca87d18ffe894dac62f3699bbb78da2bb7b21234084e"
+    },
+    {
+      "path": "public/THIRD-PARTY-NOTICES.txt",
+      "bytes": 17186,
+      "sha256": "447240faedc645ef199a2db45f8c484e21d06a2db8a1440784d4eaa043ca5830"
     }
   ],
   "submission": "Participant submits form; no receipt claimed",

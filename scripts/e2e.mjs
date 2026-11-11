@@ -116,7 +116,7 @@ try {
     .getByRole("button", { name: "Источники данных", exact: true })
     .click();
   await page
-    .getByLabel("CSV с результатами")
+    .getByLabel("CSV или Excel с результатами")
     .setInputFiles({
       name: "invalid.csv",
       mimeType: "text/csv",
@@ -131,7 +131,7 @@ try {
   await shot("invalid-csv");
   mark("invalid CSV rejected", { previousRowsRetained: 864 });
   await page
-    .getByLabel("CSV с результатами")
+    .getByLabel("CSV или Excel с результатами")
     .setInputFiles(path.join(root, "public/data/template.csv"));
   await expect(page.getByRole("status")).toContainText(
     "Загружено 6 результатов",

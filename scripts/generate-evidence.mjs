@@ -25,10 +25,10 @@ const report = {
     generatedAt: new Date().toISOString(), ...sourceHashes,
     filters: { subject: 'Математика', grade: '7', school: 'Все школы', textbook: 'Все учебники' }, budgetHours: 34,
     validation: { acceptedRows: parsed.rows.length, parseErrors: [], uniqueRecordKeys: keys.size, duplicateRecordKeys: 0, uniqueStudentIds: ids.length, expectedStudentIds: expected.length, sourceIdsMatchGenerator: true, studentIds: ids },
-    method: { score: '100 × score / max_score; numerical noise rounded to 10 decimal places', mastery: 'share of rows >=70%', books: 'equal-weight mean over common topics', hours: 'minimum1 + largest remainders; weight=currentHours*(1+3*(100-mean)/100)', limitations: 'Descriptive, synthetic; no causal efficacy or educational outcome claim.' },
+    method: { score: '100 × score / max_score; numerical noise rounded to 10 decimal places', mastery: 'share of rows >=70%', distribution: 'normalized observations; Type 7 quartiles; population standard deviation (divisor n); bins [0,20),[20,40),[40,60),[60,80),[80,100]', books: 'equal-weight mean over common topics', hours: 'minimum1 + largest remainders; weight=currentHours*(1+3*(100-mean)/100)', limitations: 'Descriptive, synthetic; no causal efficacy or educational outcome claim.' },
   }, analysis,
 };
-const files = ['artifacts/OQY-pitch.pdf', 'artifacts/demo-report.json', 'artifacts/demo-plan.csv', 'public/data/demo.csv', 'public/pitch.html', 'src/lib/analytics.ts', 'src/lib/csv.ts'];
+const files = ['artifacts/OQY-pitch.pdf', 'artifacts/demo-report.json', 'artifacts/demo-plan.csv', 'public/data/demo.csv', 'public/pitch.html', 'src/lib/analytics.ts', 'src/lib/csv.ts', 'src/lib/types.ts', 'src/lib/excel.ts', 'src/lib/excel-reader.ts', 'src/lib/excel.worker.ts', 'public/data/template.xlsx', 'package-lock.json', 'package.json', 'src/App.tsx', 'src/components/DistributionSummary.tsx', 'src/components/ResultTable.tsx', 'src/components/PlanTable.tsx', 'src/components/BookComparisonTable.tsx', 'artifacts/features-check.json', 'docs/VALIDATION.md', 'docs/FEATURE-UPDATE.md', 'public/THIRD-PARTY-NOTICES.txt'];
 if (process.argv.includes('--check')) {
   const saved = JSON.parse(readFileSync('artifacts/demo-report.json', 'utf8'));
   for (const [key, value] of Object.entries(sourceHashes)) assert.equal(saved.source[key], value, `stale ${key}`);

@@ -1,4 +1,5 @@
-import type { Analysis, BookStat, ResultRow, TopicStat } from "./types";
+import { quantileSorted, standardDeviation } from "simple-statistics";
+import type { Analysis, BookStat, Distribution, ResultRow, TopicStat } from "./types";
 
 // Remove floating-point noise at percentage decision boundaries (e.g. 5.81 / 8.3).
 const roundPercent = (value: number) => Number(value.toFixed(10));
@@ -13,6 +14,31 @@ const mastery = (rows: ResultRow[]) =>
   rows.length
     ? (rows.filter((row) => percent(row) >= 70).length / rows.length) * 100
     : 0;
+
+/** Describe normalized observations without estimating a wider population.
+ * simple-statistics 8 uses Type 7 quantiles: interpolate at zero-based index
+ * (n - 1) * p. Standard deviation divides squared deviations by n, not n - 1.
+ * Every observation has equal weight, including multiple topics for a student.
+ * Each group is sorted once; total work is O(n log n), with bounded O(n) memory. */
+function distribution(values: number[]): Distribution {
+  const bins = ["0–<20%", "20–<40%", "40–<60%", "60–<80%", "80–100%"]
+    .map((label) => ({ label, count: 0 }));
+  for (const value of values) bins[Math.min(4, Math.floor(value / 20))].count++;
+  if (!values.length) {
+    return { count: 0, median: null, q1: null, q3: null, min: null, max: null, stdDev: null, bins };
+  }
+  const sorted = [...values].sort((a, b) => a - b);
+  return {
+    count: values.length,
+    median: roundPercent(quantileSorted(sorted, 0.5)),
+    q1: roundPercent(quantileSorted(sorted, 0.25)),
+    q3: roundPercent(quantileSorted(sorted, 0.75)),
+    min: sorted[0],
+    max: sorted[sorted.length - 1],
+    stdDev: roundPercent(standardDeviation(values)),
+    bins,
+  };
+}
 
 /** Whole-hour allocation: one hour per topic, then largest remainders, weighted by
  * current hours × (1 + 3 × gap to 100%). Coefficient 3 expresses a planning
@@ -34,11 +60,12 @@ function allocate(topics: TopicStat[], budget: number): number[] {
   return result;
 }
 
-/** Analyze a selected subject/grade cohort. Values are percentages, without rounding. */
+/** Analyze a selected subject/grade cohort. Percentage noise is rounded to 10 decimals. */
 export function analyze(rows: ResultRow[], budget?: number): Analysis {
   if (!rows.length)
     return {
       mean: 0,
+      distribution: distribution([]),
       mastery: 0,
       students: 0,
       schools: 0,
@@ -78,10 +105,12 @@ export function analyze(rows: ResultRow[], budget?: number): Analysis {
         throw new RangeError(
           `Тема «${topic}»: учебные часы различаются. Выберите один учебный план.`,
         );
-      const mean = average(items.map(percent));
+      const values = items.map(percent);
+      const mean = average(values);
       return {
         topic,
         mean,
+        distribution: distribution(values),
         count: items.length,
         students: uniqueStudents(items),
         mastery: mastery(items),
@@ -126,6 +155,7 @@ export function analyze(rows: ResultRow[], budget?: number): Analysis {
           .filter((topic) => topicSets.every((set) => set.has(topic)))
       : [];
   const books: BookStat[] = Array.from(bookGroups, ([textbook, items]) => {
+    const values = items.map(percent);
     const topicScores = new Map<string, { sum: number; count: number }>();
     for (const item of items) {
       const aggregate = topicScores.get(item.topic) ?? { sum: 0, count: 0 };
@@ -135,7 +165,8 @@ export function analyze(rows: ResultRow[], budget?: number): Analysis {
     }
     return {
       textbook,
-      mean: average(items.map(percent)),
+      mean: average(values),
+      distribution: distribution(values),
       adjustedMean: commonTopics.length
         ? average(
             commonTopics.map((topic) => {
@@ -178,8 +209,10 @@ export function analyze(rows: ResultRow[], budget?: number): Analysis {
     warnings.push(
       "Объединены разные предметы или классы. Выберите один предмет и класс для интерпретации учебного плана.",
     );
+  const values = rows.map(percent);
   return {
-    mean: average(rows.map(percent)),
+    mean: average(values),
+    distribution: distribution(values),
     mastery: mastery(rows),
     students: uniqueStudents(rows),
     schools: new Set(rows.map((row) => row.school)).size,

@@ -138,3 +138,108 @@ describe("percentage boundary stability", () => {
     expect(result.topics[0].priority).toBe("medium");
   });
 });
+
+describe("descriptive result distributions", () => {
+  const results = (scores: number[]) =>
+    scores.map((score, index) => row(String(index), "Topic", score, "A", 4, 100));
+
+  it("uses Type 7 interpolation for even and odd groups and exposes skew", () => {
+    const skewed = analyze(results([0, 10, 20, 100]));
+    expect(skewed.mean).toBe(32.5);
+    expect(skewed.distribution).toMatchObject({
+      count: 4, median: 15, q1: 7.5, q3: 40, min: 0, max: 100,
+    });
+    expect(analyze(results([10, 20, 30, 40, 100])).distribution).toMatchObject({
+      count: 5, median: 30, q1: 20, q3: 40,
+    });
+  });
+
+  it("reports descriptive standard deviation with divisor n, in percentage points", () => {
+    const data = [20, 40, 40, 40, 50, 50, 70, 90];
+    const result = analyze(results(data));
+    expect(result.mean).toBe(50);
+    // Squared deviations sum to 3200, so sqrt(3200 / 8) = 20.
+    expect(result.distribution.stdDev).toBe(20);
+    expect(result.distribution.median).toBe(45);
+    expect(result.distribution.q1).toBe(40);
+    expect(result.distribution.q3).toBe(55);
+  });
+
+  it("normalizes each maximum before calculating group statistics", () => {
+    const result = analyze([
+      row("1", "Topic", 1, "A", 4, 2),
+      row("2", "Topic", 1, "A", 4, 4),
+      row("3", "Topic", 9, "A", 4, 10),
+    ]);
+    expect(result.distribution).toMatchObject({
+      count: 3, min: 25, q1: 37.5, median: 50, q3: 70, max: 90,
+    });
+    expect(result.topics[0].distribution).toEqual(result.distribution);
+    expect(result.books[0].distribution).toEqual(result.distribution);
+  });
+
+  it("does not invent statistics for an empty cohort and handles a singleton", () => {
+    const empty = analyze([]).distribution;
+    expect(empty).toMatchObject({
+      count: 0, min: null, max: null, median: null, q1: null, q3: null, stdDev: null,
+    });
+    expect(empty.bins.map((bin) => bin.count)).toEqual([0, 0, 0, 0, 0]);
+    const single = analyze([row("1", "Decimal", 5.81, "A", 4, 8.3)]).distribution;
+    expect(single).toMatchObject({
+      count: 1, min: 70, max: 70, median: 70, q1: 70, q3: 70, stdDev: 0,
+    });
+    expect(single.bins.map((bin) => bin.count)).toEqual([0, 0, 0, 1, 0]);
+  });
+
+  it("assigns every result to exactly one half-open bin and includes 100%", () => {
+    const result = analyze(results([
+      0, 19.9999999, 20, 39.9999999, 40, 59.9999999, 60, 79.9999999, 80, 100,
+    ]));
+    expect(result.distribution.bins).toEqual([
+      { label: "0–<20%", count: 2 },
+      { label: "20–<40%", count: 2 },
+      { label: "40–<60%", count: 2 },
+      { label: "60–<80%", count: 2 },
+      { label: "80–100%", count: 2 },
+    ]);
+  });
+
+  it("counts observed topic results rather than treating them as independent students", () => {
+    const result = analyze([
+      row("1", "X", 2), row("1", "Y", 8), row("2", "X", 4),
+    ]);
+    expect(result.students).toBe(2);
+    expect(result.distribution.count).toBe(3);
+    expect(result.distribution.median).toBe(40);
+    expect(result.topics.find((topic) => topic.topic === "X")?.distribution)
+      .toMatchObject({ count: 2, median: 30 });
+    expect(result.topics.find((topic) => topic.topic === "Y")?.distribution)
+      .toMatchObject({ count: 1, median: 80 });
+  });
+
+  it("keeps textbook distributions over all rows distinct from adjusted comparison", () => {
+    const result = analyze([
+      row("1", "X", 10, "A"), row("2", "X", 10, "A"),
+      row("1", "Y", 2, "A"), row("1", "Extra", 0, "A"),
+      row("3", "X", 6, "B"), row("3", "Y", 8, "B"),
+    ]);
+    const a = result.books.find((book) => book.textbook === "A")!;
+    expect(a.mean).toBe(55);
+    expect(a.adjustedMean).toBe(60);
+    expect(a.distribution).toMatchObject({ count: 4, min: 0, q1: 15, median: 60, max: 100 });
+    expect(a.distribution.bins.reduce((sum, bin) => sum + bin.count, 0)).toBe(a.count);
+    expect(result.books.find((book) => book.textbook === "B")?.distribution)
+      .toMatchObject({ count: 2, min: 60, q1: 65, median: 70, q3: 75, max: 80 });
+  });
+
+  it("does not mutate imported rows and keeps distribution independent of hour budget", () => {
+    const data = results([100, 0, 50]);
+    const snapshot = JSON.stringify(data);
+    const original = analyze(data);
+    const proposed = analyze(data, 40);
+    expect(JSON.stringify(data)).toBe(snapshot);
+    expect(proposed.distribution).toEqual(original.distribution);
+    expect(proposed.topics[0].distribution).toEqual(original.topics[0].distribution);
+    expect(proposed.recommendedTotal).toBe(40);
+  });
+});

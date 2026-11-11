@@ -15,13 +15,18 @@
     "test:package": "node --test scripts/package.check.mjs",
     "test:strict": "node scripts/audit-browser.mjs",
     "evidence": "node scripts/generate-evidence.mjs",
-    "test:design": "node scripts/design-check.mjs"
+    "test:design": "node scripts/design-check.mjs",
+    "test:features": "node scripts/features-check.mjs",
+    "pitch": "node scripts/render-pitch.mjs"
   },
   "dependencies": {
+    "@tanstack/react-table": "9.3.1",
     "lucide-react": "^0.468.0",
     "papaparse": "^5.5.3",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "read-excel-file": "9.3.14",
+    "simple-statistics": "8.0.0"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.14.0",

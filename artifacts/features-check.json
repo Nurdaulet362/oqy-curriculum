@@ -1,0 +1,298 @@
+{
+  "started": "2026-11-11T05:37:29.083Z",
+  "baseURL": "http://127.0.0.1:4175",
+  "browser": "156.0.8078.80",
+  "status": "pass",
+  "checks": [
+    {
+      "name": "real XLSX template loads through browser worker",
+      "status": "pass",
+      "observations": 6,
+      "topics": 6
+    },
+    {
+      "name": "valid streaming ZIP descriptor XLSX imports",
+      "status": "pass"
+    },
+    {
+      "name": "independently known statistics survive XLSX import and JSON export",
+      "status": "pass",
+      "expected": {
+        "count": 4,
+        "median": 15,
+        "q1": 7.5,
+        "q3": 40,
+        "min": 0,
+        "max": 100,
+        "stdDev": 39.6074487944,
+        "bins": [
+          {
+            "label": "0–<20%",
+            "count": 2
+          },
+          {
+            "label": "20–<40%",
+            "count": 1
+          },
+          {
+            "label": "40–<60%",
+            "count": 0
+          },
+          {
+            "label": "60–<80%",
+            "count": 0
+          },
+          {
+            "label": "80–100%",
+            "count": 1
+          }
+        ]
+      }
+    },
+    {
+      "name": "cancel stalled Excel worker preserves data and restores controls",
+      "status": "pass",
+      "simulation": "Only worker entry is stubbed to never respond; this does not validate parsing."
+    },
+    {
+      "name": "invalid selected sheet preserves data; selecting valid sheet recovers",
+      "status": "pass"
+    },
+    {
+      "name": "Excel sheet chooser 320px accessibility/layout",
+      "status": "pass",
+      "axePasses": 26,
+      "overflow": {
+        "viewport": 320,
+        "document": 320
+      }
+    },
+    {
+      "name": "Excel sheet chooser 390px accessibility/layout",
+      "status": "pass",
+      "axePasses": 26,
+      "overflow": {
+        "viewport": 390,
+        "document": 390
+      }
+    },
+    {
+      "name": "Excel sheet chooser 1440px accessibility/layout",
+      "status": "pass",
+      "axePasses": 25,
+      "overflow": {
+        "viewport": 1440,
+        "document": 1440
+      }
+    },
+    {
+      "name": "canceling sheet selection preserves installed data",
+      "status": "pass"
+    },
+    {
+      "name": "selected second sheet imports without silently importing first",
+      "status": "pass",
+      "mean": 80,
+      "observations": 1
+    },
+    {
+      "name": "rejected invalid-headers.xlsx preserves current dataset",
+      "status": "pass",
+      "error": "Не удалось загрузить данные\n\nОтсутствуют столбцы: student_id.\n\nНеизвестные столбцы: unknown. Используйте шаблон без ФИО и контактов.\n\nЕсли набор уже был открыт, он сохранён. Исправьте файл или загрузите демо."
+    },
+    {
+      "name": "rejected formula.xlsx preserves current dataset",
+      "status": "pass",
+      "error": "Не удалось загрузить данные\n\nКнига содержит формулы. Скопируйте результаты и вставьте только значения перед импортом: сохранённые результаты формул не используются.\n\nЕсли набор уже был открыт, он сохранён. Исправьте файл или загрузите демо."
+    },
+    {
+      "name": "rejected invalid-score.xlsx preserves current dataset",
+      "status": "pass",
+      "error": "Не удалось загрузить данные\n\nСтрока 2: «score» должен быть от 0 до max_score.\n\nЕсли набор уже был открыт, он сохранён. Исправьте файл или загрузите демо."
+    },
+    {
+      "name": "rejected huge-coordinate.xlsx preserves current dataset",
+      "status": "pass",
+      "error": "Не удалось загрузить данные\n\nКнига Excel слишком сложная: максимум 32 МБ после распаковки, 20 листов, 20 000 строк и 9 столбцов на лист. Удалите лишнее оформление или сохраните нужный лист в CSV.\n\nЕсли набор уже был открыт, он сохранён. Исправьте файл или загрузите демо."
+    },
+    {
+      "name": "rejected coordinate-decoy.xlsx preserves current dataset",
+      "status": "pass",
+      "error": "Не удалось загрузить данные\n\nКнига Excel слишком сложная: максимум 32 МБ после распаковки, 20 листов, 20 000 строк и 9 столбцов на лист. Удалите лишнее оформление или сохраните нужный лист в CSV.\n\nЕсли набор уже был открыт, он сохранён. Исправьте файл или загрузите демо."
+    },
+    {
+      "name": "rejected entity-coordinate.xlsx preserves current dataset",
+      "status": "pass",
+      "error": "Не удалось загрузить данные\n\nКнига Excel слишком сложная: максимум 32 МБ после распаковки, 20 листов, 20 000 строк и 9 столбцов на лист. Удалите лишнее оформление или сохраните нужный лист в CSV.\n\nЕсли набор уже был открыт, он сохранён. Исправьте файл или загрузите демо."
+    },
+    {
+      "name": "rejected oversized-metadata.xlsx preserves current dataset",
+      "status": "pass",
+      "error": "Не удалось загрузить данные\n\nКнига Excel слишком сложная: максимум 32 МБ после распаковки, 20 листов, 20 000 строк и 9 столбцов на лист. Удалите лишнее оформление или сохраните нужный лист в CSV.\n\nЕсли набор уже был открыт, он сохранён. Исправьте файл или загрузите демо."
+    },
+    {
+      "name": "rejected dishonest-size.xlsx preserves current dataset",
+      "status": "pass",
+      "error": "Не удалось загрузить данные\n\nКнига Excel слишком сложная: максимум 32 МБ после распаковки, 20 листов, 20 000 строк и 9 столбцов на лист. Удалите лишнее оформление или сохраните нужный лист в CSV.\n\nЕсли набор уже был открыт, он сохранён. Исправьте файл или загрузите демо."
+    },
+    {
+      "name": "rejected empty.xlsx preserves current dataset",
+      "status": "pass",
+      "error": "Не удалось загрузить данные\n\nЛист пуст. Выберите другой лист или заполните шаблон.\n\nЕсли набор уже был открыт, он сохранён. Исправьте файл или загрузите демо."
+    },
+    {
+      "name": "rejected headers-only.xlsx preserves current dataset",
+      "status": "pass",
+      "error": "Не удалось загрузить данные\n\nВ CSV есть заголовок, но нет результатов.\n\nЕсли набор уже был открыт, он сохранён. Исправьте файл или загрузите демо."
+    },
+    {
+      "name": "rejected boolean.xlsx preserves current dataset",
+      "status": "pass",
+      "error": "Не удалось загрузить данные\n\nСтрока 2, столбец 7: даты, логические значения и ошибки Excel не поддерживаются. Введите текст или число.\n\nЕсли набор уже был открыт, он сохранён. Исправьте файл или загрузите демо."
+    },
+    {
+      "name": "rejected date.xlsx preserves current dataset",
+      "status": "pass",
+      "error": "Не удалось загрузить данные\n\nСтрока 2, столбец 7: даты, логические значения и ошибки Excel не поддерживаются. Введите текст или число.\n\nЕсли набор уже был открыт, он сохранён. Исправьте файл или загрузите демо."
+    },
+    {
+      "name": "rejected duplicate-header.xlsx preserves current dataset",
+      "status": "pass",
+      "error": "Не удалось загрузить данные\n\nОтсутствуют столбцы: hours.\n\nНеизвестные столбцы: score_1. Используйте шаблон без ФИО и контактов.\n\nЕсли набор уже был открыт, он сохранён. Исправьте файл или загрузите демо."
+    },
+    {
+      "name": "rejected duplicate-result.xlsx preserves current dataset",
+      "status": "pass",
+      "error": "Не удалось загрузить данные\n\nСтрока 3: повтор результата ученика по той же теме и предмету. Оставьте один результат.\n\nЕсли набор уже был открыт, он сохранён. Исправьте файл или загрузите демо."
+    },
+    {
+      "name": "rejected local-mismatch-crc.xlsx preserves current dataset",
+      "status": "pass",
+      "error": "Не удалось загрузить данные\n\nExcel-файл повреждён или использует неподдерживаемый ZIP-формат. Сохраните книгу заново в .xlsx.\n\nЕсли набор уже был открыт, он сохранён. Исправьте файл или загрузите демо."
+    },
+    {
+      "name": "rejected local-mismatch-compressed.xlsx preserves current dataset",
+      "status": "pass",
+      "error": "Не удалось загрузить данные\n\nExcel-файл повреждён или использует неподдерживаемый ZIP-формат. Сохраните книгу заново в .xlsx.\n\nЕсли набор уже был открыт, он сохранён. Исправьте файл или загрузите демо."
+    },
+    {
+      "name": "rejected local-mismatch-expanded.xlsx preserves current dataset",
+      "status": "pass",
+      "error": "Не удалось загрузить данные\n\nExcel-файл повреждён или использует неподдерживаемый ZIP-формат. Сохраните книгу заново в .xlsx.\n\nЕсли набор уже был открыт, он сохранён. Исправьте файл или загрузите демо."
+    },
+    {
+      "name": "rejected local-mismatch-flags.xlsx preserves current dataset",
+      "status": "pass",
+      "error": "Не удалось загрузить данные\n\nExcel-файл повреждён или использует неподдерживаемый ZIP-формат. Сохраните книгу заново в .xlsx.\n\nЕсли набор уже был открыт, он сохранён. Исправьте файл или загрузите демо."
+    },
+    {
+      "name": "rejected descriptor-mismatch.xlsx preserves current dataset",
+      "status": "pass",
+      "error": "Не удалось загрузить данные\n\nExcel-файл повреждён или использует неподдерживаемый ZIP-формат. Сохраните книгу заново в .xlsx.\n\nЕсли набор уже был открыт, он сохранён. Исправьте файл или загрузите демо."
+    },
+    {
+      "name": "rejected ambiguous-eocd.xlsx preserves current dataset",
+      "status": "pass",
+      "error": "Не удалось загрузить данные\n\nExcel-файл повреждён или использует неподдерживаемый ZIP-формат. Сохраните книгу заново в .xlsx.\n\nЕсли набор уже был открыт, он сохранён. Исправьте файл или загрузите демо."
+    },
+    {
+      "name": "rejected hidden-zip64-locator.xlsx preserves current dataset",
+      "status": "pass",
+      "error": "Не удалось загрузить данные\n\nExcel-файл повреждён или использует неподдерживаемый ZIP-формат. Сохраните книгу заново в .xlsx.\n\nЕсли набор уже был открыт, он сохранён. Исправьте файл или загрузите демо."
+    },
+    {
+      "name": "rejected corrupt.xlsx preserves current dataset",
+      "status": "pass"
+    },
+    {
+      "name": "rejected oversized.xlsx preserves current dataset",
+      "status": "pass"
+    },
+    {
+      "name": "rejected legacy.xls preserves current dataset",
+      "status": "pass"
+    },
+    {
+      "name": "plan sorting is numeric for percentages, hours and signed deltas",
+      "status": "pass"
+    },
+    {
+      "name": "Cyrillic search, no-results recovery, full footer and unfiltered exports",
+      "status": "pass"
+    },
+    {
+      "name": "cohort filter resets table query",
+      "status": "pass"
+    },
+    {
+      "name": "missing book cells stay last in both sort directions; raw statistics differ from adjusted comparison",
+      "status": "pass"
+    },
+    {
+      "name": "long labels plan 320px layout/accessibility",
+      "status": "pass",
+      "overflow": {
+        "viewport": 320,
+        "document": 320
+      },
+      "axePasses": 29
+    },
+    {
+      "name": "long labels books 320px layout/accessibility",
+      "status": "pass",
+      "overflow": {
+        "viewport": 320,
+        "document": 320
+      },
+      "axePasses": 31
+    },
+    {
+      "name": "long labels plan 390px layout/accessibility",
+      "status": "pass",
+      "overflow": {
+        "viewport": 390,
+        "document": 390
+      },
+      "axePasses": 29
+    },
+    {
+      "name": "long labels books 390px layout/accessibility",
+      "status": "pass",
+      "overflow": {
+        "viewport": 390,
+        "document": 390
+      },
+      "axePasses": 31
+    },
+    {
+      "name": "long labels plan 1440px layout/accessibility",
+      "status": "pass",
+      "overflow": {
+        "viewport": 1440,
+        "document": 1440
+      },
+      "axePasses": 28
+    },
+    {
+      "name": "long labels books 1440px layout/accessibility",
+      "status": "pass",
+      "overflow": {
+        "viewport": 1440,
+        "document": 1440
+      },
+      "axePasses": 30
+    },
+    {
+      "name": "20,000-row browser import, table search and export remain usable",
+      "status": "pass",
+      "elapsedMs": 412,
+      "observations": 20000,
+      "uniqueStudents": 100,
+      "topics": 200,
+      "books": 20,
+      "note": "Generous 30-second action timeout; smoke evidence, not a performance SLA."
+    }
+  ],
+  "runtimeErrors": [],
+  "finished": "2026-11-11T05:37:42.753Z"
+}

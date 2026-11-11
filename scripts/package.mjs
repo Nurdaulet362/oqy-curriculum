@@ -96,7 +96,7 @@ except KeyboardInterrupt:
 
 - [Презентация PDF](artifacts/OQY-pitch.pdf), [автономные слайды](presentation.html).
 - [Сценарий защиты](docs/PITCH.md), [ответы жюри](docs/JURY_QA.md).
-- [Демо CSV](dist/data/demo.csv), [шаблон CSV](dist/data/template.csv).
+- [Демо CSV](dist/data/demo.csv), [шаблон CSV](dist/data/template.csv), [шаблон Excel](dist/data/template.xlsx).
 - [Версия сборки](VERSION.json), [контрольные суммы файлов этого архива](MANIFEST.json).
 
 README исходного проекта сохранён как SOURCE-README.md; команды npm из него предназначены для исходного ZIP или Git-репозитория, а не этого комплекта.

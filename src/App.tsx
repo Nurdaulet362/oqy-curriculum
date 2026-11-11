@@ -23,7 +23,11 @@ import {
 } from "lucide-react";
 import { analyze } from "./lib/analytics";
 import { parseCSV, MAX_CSV_BYTES } from "./lib/csv";
-import type { Analysis, ResultRow } from "./lib/types";
+import type { Analysis, ParseResult, ResultRow } from "./lib/types";
+import type { ExcelWorkbook } from "./lib/excel";
+import { PlanTable } from "./components/PlanTable";
+import { BookComparisonTable } from "./components/BookComparisonTable";
+import { DistributionSummary, DistributionFacts } from "./components/DistributionSummary";
 
 type View = "overview" | "books" | "plan" | "data" | "method";
 const nav = [
@@ -97,11 +101,17 @@ export default function App() {
   const [busy, setBusy] = useState(true);
   const [message, setMessage] = useState("");
   const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
+  const [pendingExcel, setPendingExcel] = useState<{ name: string; workbook: ExcelWorkbook } | null>(null);
+  const [sheetIndex, setSheetIndex] = useState(0);
+  const [datasetVersion, setDatasetVersion] = useState(0);
   const fileInput = useRef<HTMLInputElement>(null);
+  const fileTrigger = useRef<HTMLButtonElement>(null);
+  const sheetSelect = useRef<HTMLSelectElement>(null);
   const topicTrigger = useRef<HTMLButtonElement | null>(null);
   const requestId = useRef(0);
   const demoController = useRef<AbortController | null>(null);
   function install(next: ResultRow[], name: string, demo: boolean) {
+    setDatasetVersion((version) => version + 1);
     setRows(next);
     setSource(name);
     setIsDemo(demo);
@@ -111,6 +121,7 @@ export default function App() {
     setBudget(undefined);
     setError([]);
     setSelectedTopic(null);
+    setPendingExcel(null);
   }
   async function loadDemo() {
     const id = ++requestId.current;
@@ -119,6 +130,7 @@ export default function App() {
     demoController.current = controller;
     setBusy(true);
     setMessage("");
+    setPendingExcel(null);
     try {
       const res = await fetch("/data/demo.csv", { signal: controller.signal });
       if (!res.ok) throw new Error("Не удалось загрузить демо. Попробуйте ещё раз.");
@@ -138,22 +150,42 @@ export default function App() {
     void loadDemo();
     return () => { ++requestId.current; demoController.current?.abort(); };
   }, []);
+  useEffect(() => {
+    if (pendingExcel) sheetSelect.current?.focus();
+  }, [pendingExcel]);
   async function importFile(file?: File) {
     if (!file) return;
     const id = ++requestId.current;
     demoController.current?.abort();
+    const controller = new AbortController();
+    demoController.current = controller;
     setBusy(true);
     setMessage("");
+    setError([]);
+    setPendingExcel(null);
     try {
       if (file.size > MAX_CSV_BYTES)
         throw new Error("Файл больше 5 МБ. Разделите данные на несколько наборов.");
+      const extension = file.name.split(".").at(-1)?.toLowerCase();
+      if (extension === "xlsx") {
+        const { loadExcel, parseExcelSheet } = await import("./lib/excel");
+        if (id !== requestId.current) return;
+        const workbook = await loadExcel(file, { signal: controller.signal });
+        if (id !== requestId.current) return;
+        if (workbook.sheets.length > 1) {
+          setPendingExcel({ name: file.name, workbook });
+          setSheetIndex(0);
+        } else {
+          const sheet = workbook.sheets[0];
+          if (!sheet) throw new Error("В книге Excel нет листов с данными.");
+          acceptImport(parseExcelSheet(sheet), `${file.name} · ${sheet.name}`);
+        }
+        return;
+      }
+      if (extension !== "csv") throw new Error("Выберите CSV или Excel (.xlsx). Файлы .xls и .xlsm сохраните как .xlsx без формул.");
       const contents = await file.text();
       if (id !== requestId.current) return;
-      const parsed = parseCSV(contents);
-      if (parsed.errors.length) { setError(parsed.errors); return; }
-      install(parsed.rows, file.name, false);
-      setMessage(`Загружено ${parsed.rows.length} результатов. Данные обработаны локально.`);
-      setView("overview");
+      acceptImport(parseCSV(contents), file.name);
     } catch (e) {
       if (id === requestId.current) setError([e instanceof Error ? e.message : "Не удалось прочитать файл"]);
     } finally {
@@ -161,6 +193,30 @@ export default function App() {
         setBusy(false);
         if (fileInput.current) fileInput.current.value = "";
       }
+    }
+  }
+  function acceptImport(parsed: ParseResult, name: string) {
+    if (parsed.errors.length) { setError(parsed.errors); return; }
+    install(parsed.rows, name, false);
+    setMessage(`Загружено ${parsed.rows.length} результатов. Данные обработаны локально.`);
+    setView("overview");
+    requestAnimationFrame(() => document.getElementById("main-content")?.focus());
+  }
+  async function importSelectedSheet() {
+    if (!pendingExcel) return;
+    const sheet = pendingExcel.workbook.sheets[sheetIndex];
+    if (!sheet) return;
+    const id = ++requestId.current;
+    setBusy(true);
+    setError([]);
+    try {
+      const { parseExcelSheet } = await import("./lib/excel");
+      if (id !== requestId.current) return;
+      acceptImport(parseExcelSheet(sheet), `${pendingExcel.name} · ${sheet.name}`);
+    } catch (e) {
+      if (id === requestId.current) setError([e instanceof Error ? e.message : "Не удалось прочитать лист"]);
+    } finally {
+      if (id === requestId.current) setBusy(false);
     }
   }
   const subjects = useMemo(() => [...new Set(rows.map((r) => r.subject))], [rows]);
@@ -384,23 +440,43 @@ export default function App() {
               </p>
             </div>
             <button
+              ref={fileTrigger}
               className="btn primary"
               disabled={busy}
               onClick={() => fileInput.current?.click()}
             >
               <Upload aria-hidden="true" size={17} />
-              Загрузить CSV
+              Загрузить CSV / Excel
             </button>
             <input
               ref={fileInput}
-              aria-label="CSV с результатами"
-              name="results-csv"
+              aria-label="CSV или Excel с результатами"
+              name="results-file"
               type="file"
-              accept=".csv,text/csv"
+              accept=".csv,.xlsx,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
               hidden
               onChange={(e) => void importFile(e.target.files?.[0])}
             />
           </div>
+          {pendingExcel && (
+            <section className="panel excel-choice" aria-label="Выбор листа Excel">
+              <div>
+                <h2>Выберите лист для анализа</h2>
+                <p>{pendingExcel.name}</p>
+                <p>В книге {pendingExcel.workbook.sheets.length} листов. Будет загружен только выбранный лист; текущий набор сохранится до успешной проверки.</p>
+              </div>
+              <label>
+                Лист Excel
+                <select ref={sheetSelect} name="excel-sheet" value={sheetIndex} disabled={busy} onChange={(event) => setSheetIndex(Number(event.target.value))}>
+                  {pendingExcel.workbook.sheets.map((sheet, index) => <option key={index} value={index}>{sheet.name}</option>)}
+                </select>
+              </label>
+              <div className="excel-actions">
+                <button className="btn primary" disabled={busy} onClick={() => void importSelectedSheet()}>Импортировать лист</button>
+                <button className="btn secondary" disabled={busy} onClick={() => { setPendingExcel(null); setError([]); fileTrigger.current?.focus(); }}>Отменить выбор</button>
+              </div>
+            </section>
+          )}
           {error.length > 0 && (
             <div className="notice error" role="alert">
               <div>
@@ -516,7 +592,14 @@ export default function App() {
           )}
           {busy && (
             <div className="notice" role="status">
-              Обрабатываем данные…
+              <span>Обрабатываем данные…</span>
+              <button className="text-button" onClick={() => {
+                ++requestId.current;
+                demoController.current?.abort();
+                setBusy(false);
+                if (fileInput.current) fileInput.current.value = "";
+                setMessage("Загрузка отменена.");
+              }}>Отменить загрузку</button>
             </div>
           )}
           {result.error && (
@@ -573,6 +656,7 @@ export default function App() {
                   detail="В текущем учебном плане"
                 />
               </div>
+              <DistributionSummary distribution={a.distribution} />
               <div className="overview-grid">
                 <section className="panel topics-panel">
                   <div className="panel-heading">
@@ -625,6 +709,7 @@ export default function App() {
                               <h3>{t.topic}</h3>
                               <p>{t.students} учеников · {t.count} результатов · средний балл {pct(t.mean)}%</p>
                               <p>Порог 70% достигнут в {pct(t.mastery)}% результатов. Текущие часы: {t.currentHours}; предложено: {t.recommendedHours}.</p>
+                            <DistributionFacts distribution={t.distribution} />
                             </div>
                             <button
                               className="icon-btn"
@@ -761,6 +846,8 @@ export default function App() {
                         <span>{b.count} результатов</span>
                       </div>
                       <small>Среднее по всем результатам: {pct(b.mean)}%</small>
+                      <p className="book-distribution-label">Распределение всех результатов этого учебника</p>
+                      <DistributionFacts distribution={b.distribution} compact />
                     </div>
                   </section>
                 ))}
@@ -774,46 +861,10 @@ export default function App() {
                     </p>
                   </div>
                 </div>
-                <p className="table-hint">На узком экране прокрутите таблицу вправо.</p>
-                <div className="table-wrap" tabIndex={0} role="region" aria-label="Сравнение учебников по темам">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>Тема</th>
-                        {a.books.map((b) => (
-                          <th key={b.textbook}>{b.textbook}</th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {a.topics.map((t) => (
-                        <tr key={t.topic}>
-                          <td>{t.topic}</td>
-                          {a.books.map((b) => {
-                            const cell = comparison.get(t.topic)?.get(b.textbook);
-                            return (
-                              <td key={b.textbook}>
-                                {cell ? (
-                                  <>
-                                    <strong>
-                                      {pct(
-                                        cell.sum / cell.count,
-                                      )}
-                                      %
-                                    </strong>{" "}
-                                    <small>({cell.count})</small>
-                                  </>
-                                ) : (
-                                  "Нет данных"
-                                )}
-                              </td>
-                            );
-                          })}
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                <BookComparisonTable
+                  key={JSON.stringify([datasetVersion, subject, grade, school])}
+                  topics={a.topics} books={a.books} comparison={comparison}
+                />
               </section>
               <div className="notice muted">
                 <ShieldCheck aria-hidden="true" size={20} />
@@ -877,67 +928,10 @@ export default function App() {
                     Скачать план CSV
                   </button>
                 </div>
-                <p className="table-hint">На узком экране прокрутите таблицу вправо.</p>
-                <div className="table-wrap" tabIndex={0} role="region" aria-label="Предлагаемый учебный план">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>Тема программы</th>
-                        <th>Результат</th>
-                        <th>Сейчас, ч.</th>
-                        <th>План, ч.</th>
-                        <th>Изменение</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {sorted.map((t) => (
-                        <tr key={t.topic}>
-                          <td>
-                            <strong>{t.topic}</strong>
-                            <small className="table-sub">
-                              {t.count} результатов
-                            </small>
-                          </td>
-                          <td>
-                            <span
-                              className={`score-pill ${t.mean < 70 ? "warm" : ""}`}
-                            >
-                              {pct(t.mean)}%
-                            </span>
-                          </td>
-                          <td>{t.currentHours}</td>
-                          <td>
-                            <strong>{t.recommendedHours}</strong>
-                          </td>
-                          <td>
-                            <span
-                              className={`delta ${t.delta > 0 ? "positive" : t.delta < 0 ? "negative" : ""}`}
-                            >
-                              {t.delta > 0 ? "+" : ""}
-                              {t.delta === 0
-                                ? "Без изменений"
-                                : `${t.delta} ч.`}
-                            </span>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                    <tfoot>
-                      <tr>
-                        <td>Всего часов</td>
-                        <td />
-                        <td>{a.totalHours}</td>
-                        <td>{a.recommendedTotal}</td>
-                        <td>
-                          <span className="conserved">
-                            <Check aria-hidden="true" size={15} />
-                            Бюджет соблюдён
-                          </span>
-                        </td>
-                      </tr>
-                    </tfoot>
-                  </table>
-                </div>
+                <PlanTable
+                  key={JSON.stringify([datasetVersion, subject, grade, school])}
+                  topics={a.topics} totalHours={a.totalHours} recommendedTotal={a.recommendedTotal}
+                />
               </section>
               <div className="notice muted">
                 <CircleHelp aria-hidden="true" size={20} />
@@ -963,9 +957,9 @@ export default function App() {
                   </span>
                   <h2>От таблицы — к картине обучения</h2>
                   <p>
-                    CSV в UTF-8, до 5 МБ и 20 000 строк.
+                    CSV в UTF-8 или Excel (.xlsx), до 5 МБ и 20 000 строк на выбранном листе.
                     <br />
-                    Разделитель — запятая или точка с запятой. До 200 тем и 20 учебников на предмет и класс.
+                    Для CSV разделитель — запятая или точка с запятой. В Excel выберите лист с теми же колонками, без формул. До 200 тем и 20 учебников на предмет и класс.
                   </p>
                   <button
                     className="btn primary"
@@ -973,11 +967,15 @@ export default function App() {
                     disabled={busy}
                   >
                     <Plus aria-hidden="true" size={17} />
-                    Выбрать CSV
+                    Выбрать файл
                   </button>
                   <a className="text-button" href="/data/template.csv" download>
-                    Скачать шаблон <ArrowDownToLine aria-hidden="true" size={15} />
+                    Шаблон CSV <ArrowDownToLine aria-hidden="true" size={15} />
                   </a>
+                  <a className="text-button" href="/data/template.xlsx" download>
+                    Шаблон Excel <ArrowDownToLine aria-hidden="true" size={15} />
+                  </a>
+                  <p className="import-hint">ID с ведущими нулями сохраняйте в текстовом формате. Формулы замените значениями; старый формат .xls не поддерживается.</p>
                 </section>
                 <section className="panel data-info">
                   <span className="mini-label">АКТИВНЫЙ ИСТОЧНИК</span>
@@ -1098,8 +1096,13 @@ export default function App() {
                 ],
                 [
                   "06",
+                  "Распределение результатов",
+                  "Медиана и квартили описывают нормализованные баллы. Квартили используют линейную интерполяцию Type 7; стандартное отклонение — делитель n. Наблюдение — результат по теме, не уникальный ученик. Распределение учебника включает все его результаты, а сопоставимое среднее выше — только общие темы с одинаковым весом.",
+                ],
+                [
+                  "07",
                   "Архитектура и приватность",
-                  "React + TypeScript. Парсинг, проверка CSV и расчёты выполняются в браузере. Без генеративной модели, внешних API и передачи результатов на сервер.",
+                  "React + TypeScript. CSV и Excel проверяются локально; чтение Excel выполняется в отдельном потоке браузера. TanStack Table отвечает за поиск и сортировку отображения. Расчёты и экспорт используют полный набор выбранных школы, предмета и класса. Без генеративной модели, внешних API и передачи результатов на сервер.",
                 ],
               ].map(([n, h, p]) => (
                 <section className="panel method-card" key={n}>

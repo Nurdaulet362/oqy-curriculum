@@ -83,7 +83,7 @@ try {
   await page.route('**/data/demo.csv', async route => { await gate; await route.fulfill({ status: 200, contentType: 'text/csv', body: demoCSV }); });
   await page.reload({ waitUntil: 'domcontentloaded' });
   await expect(page.getByRole('status')).toContainText('Обрабатываем данные');
-  await expect(page.getByRole('button', { name: 'Загрузить CSV', exact: true })).toBeDisabled();
+  await expect(page.getByRole('button', { name: 'Загрузить CSV / Excel', exact: true })).toBeDisabled();
   release();
   await expect(page.locator('.metric').first().locator('strong')).toHaveText('144');
   interactionChecks.push({ check: 'loading state and completion', status: 'pass', observation: 'Loading status and disabled upload shown while demo response is held; analysis appears after release.' });

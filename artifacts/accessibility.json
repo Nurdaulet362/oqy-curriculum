@@ -1,6 +1,6 @@
 {
   "status": "pass",
-  "recordedAt": "2026-11-11T05:19:34.862Z",
+  "recordedAt": "2026-11-11T05:33:27.699Z",
   "baseURL": "http://127.0.0.1:4175",
   "browser": "156.0.8078.80",
   "scope": "Automated axe WCAG 2/2.1 A/AA checks; keyboard focus style, document overflow, navigation, loading and initial network-failure recovery. Not a complete manual accessibility certification.",
@@ -23,7 +23,7 @@
         "document": 1440
       },
       "violations": [],
-      "passes": 20,
+      "passes": 25,
       "incomplete": []
     },
     {
@@ -34,7 +34,7 @@
         "document": 1440
       },
       "violations": [],
-      "passes": 25,
+      "passes": 30,
       "incomplete": []
     },
     {
@@ -78,7 +78,7 @@
         "document": 390
       },
       "violations": [],
-      "passes": 21,
+      "passes": 26,
       "incomplete": [
         {
           "id": "color-contrast",
@@ -108,7 +108,7 @@
         "document": 390
       },
       "violations": [],
-      "passes": 26,
+      "passes": 31,
       "incomplete": [
         {
           "id": "color-contrast",
@@ -198,9 +198,6 @@
           "id": "color-contrast",
           "impact": "serious",
           "nodes": [
-            [
-              "button:nth-child(4)"
-            ],
             [
               ".mobile-only[href$=\"pitch.html\"][target=\"_blank\"]"
             ]

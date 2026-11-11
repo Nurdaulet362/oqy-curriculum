@@ -1,8 +1,8 @@
 {
   "status": "pass",
   "baseURL": "http://127.0.0.1:4175",
-  "recordedAt": "2026-11-11T05:19:37.343Z",
-  "walkthroughSeconds": 1.769,
+  "recordedAt": "2026-11-11T05:33:25.366Z",
+  "walkthroughSeconds": 2.23,
   "timingScope": "Automated functional walkthrough, includes screenshot writes and downloads; not a human speech rehearsal or performance benchmark.",
   "browser": "156.0.8078.80",
   "viewports": [
@@ -12,34 +12,34 @@
   "steps": [
     {
       "name": "overview",
-      "elapsedSeconds": 0.515,
+      "elapsedSeconds": 0.667,
       "students": 144,
       "rows": 864,
       "topics": 6
     },
     {
       "name": "topic details",
-      "elapsedSeconds": 0.651
+      "elapsedSeconds": 0.81
     },
     {
       "name": "textbook comparison",
-      "elapsedSeconds": 0.904,
+      "elapsedSeconds": 1.13,
       "books": 2,
       "commonTopics": 6
     },
     {
       "name": "default plan",
-      "elapsedSeconds": 0.95,
+      "elapsedSeconds": 1.203,
       "totalHours": 34
     },
     {
       "name": "invalid budget rejected",
-      "elapsedSeconds": 1.002,
+      "elapsedSeconds": 1.218,
       "previousBudgetRetained": 34
     },
     {
       "name": "40-hour plan",
-      "elapsedSeconds": 1.187,
+      "elapsedSeconds": 1.534,
       "proposedHours": [
         8,
         9,
@@ -51,34 +51,34 @@
     },
     {
       "name": "exports verified",
-      "elapsedSeconds": 1.345,
+      "elapsedSeconds": 1.662,
       "report": "oqy-report.json",
       "plan": "oqy-plan.csv"
     },
     {
       "name": "invalid CSV rejected",
-      "elapsedSeconds": 1.489,
+      "elapsedSeconds": 1.876,
       "previousRowsRetained": 864
     },
     {
       "name": "valid CSV imported",
-      "elapsedSeconds": 1.507,
+      "elapsedSeconds": 1.893,
       "rows": 6,
       "students": 1
     },
     {
       "name": "single textbook cannot be compared",
-      "elapsedSeconds": 1.637
+      "elapsedSeconds": 1.963
     },
     {
       "name": "demo restored",
-      "elapsedSeconds": 1.769
+      "elapsedSeconds": 2.23
     }
   ],
   "pageErrors": [],
   "exportedReport": {
     "project": "OQY",
-    "created_at": "2026-11-11T05:19:36.710Z",
+    "created_at": "2026-11-11T05:33:24.624Z",
     "source": "Демонстрационный набор",
     "filters": {
       "subject": "Математика",
@@ -88,6 +88,37 @@
     "limitations": "Описательная аналитика. Сравнение не доказывает причинную эффективность учебника. План — предложение для методиста.",
     "analysis": {
       "mean": 67.5520833333,
+      "distribution": {
+        "count": 864,
+        "median": 68,
+        "q1": 58,
+        "q3": 79,
+        "min": 25,
+        "max": 100,
+        "stdDev": 14.9925002953,
+        "bins": [
+          {
+            "label": "0–<20%",
+            "count": 0
+          },
+          {
+            "label": "20–<40%",
+            "count": 18
+          },
+          {
+            "label": "40–<60%",
+            "count": 228
+          },
+          {
+            "label": "60–<80%",
+            "count": 406
+          },
+          {
+            "label": "80–100%",
+            "count": 212
+          }
+        ]
+      },
       "mastery": 48.842592592592595,
       "students": 144,
       "schools": 3,
@@ -95,6 +126,37 @@
         {
           "topic": "Дроби",
           "mean": 51.5972222222,
+          "distribution": {
+            "count": 144,
+            "median": 50,
+            "q1": 43.75,
+            "q3": 60,
+            "min": 25,
+            "max": 75,
+            "stdDev": 11.4360051813,
+            "bins": [
+              {
+                "label": "0–<20%",
+                "count": 0
+              },
+              {
+                "label": "20–<40%",
+                "count": 14
+              },
+              {
+                "label": "40–<60%",
+                "count": 85
+              },
+              {
+                "label": "60–<80%",
+                "count": 45
+              },
+              {
+                "label": "80–100%",
+                "count": 0
+              }
+            ]
+          },
           "count": 144,
           "students": 144,
           "mastery": 9.027777777777777,
@@ -106,6 +168,37 @@
         {
           "topic": "Линейные уравнения",
           "mean": 56.8055555556,
+          "distribution": {
+            "count": 144,
+            "median": 58,
+            "q1": 49.5,
+            "q3": 66,
+            "min": 32,
+            "max": 80,
+            "stdDev": 10.5995792486,
+            "bins": [
+              {
+                "label": "0–<20%",
+                "count": 0
+              },
+              {
+                "label": "20–<40%",
+                "count": 4
+              },
+              {
+                "label": "40–<60%",
+                "count": 80
+              },
+              {
+                "label": "60–<80%",
+                "count": 59
+              },
+              {
+                "label": "80–100%",
+                "count": 1
+              }
+            ]
+          },
           "count": 144,
           "students": 144,
           "mastery": 15.277777777777779,
@@ -117,6 +210,37 @@
         {
           "topic": "Проценты",
           "mean": 65.4027777778,
+          "distribution": {
+            "count": 144,
+            "median": 66,
+            "q1": 58.75,
+            "q3": 71,
+            "min": 41,
+            "max": 86,
+            "stdDev": 9.7163375047,
+            "bins": [
+              {
+                "label": "0–<20%",
+                "count": 0
+              },
+              {
+                "label": "20–<40%",
+                "count": 0
+              },
+              {
+                "label": "40–<60%",
+                "count": 42
+              },
+              {
+                "label": "60–<80%",
+                "count": 86
+              },
+              {
+                "label": "80–100%",
+                "count": 16
+              }
+            ]
+          },
           "count": 144,
           "students": 144,
           "mastery": 35.41666666666667,
@@ -128,6 +252,37 @@
         {
           "topic": "Степени",
           "mean": 71.6388888889,
+          "distribution": {
+            "count": 144,
+            "median": 72,
+            "q1": 66,
+            "q3": 78,
+            "min": 50,
+            "max": 96,
+            "stdDev": 9.2665850649,
+            "bins": [
+              {
+                "label": "0–<20%",
+                "count": 0
+              },
+              {
+                "label": "20–<40%",
+                "count": 0
+              },
+              {
+                "label": "40–<60%",
+                "count": 14
+              },
+              {
+                "label": "60–<80%",
+                "count": 100
+              },
+              {
+                "label": "80–100%",
+                "count": 30
+              }
+            ]
+          },
           "count": 144,
           "students": 144,
           "mastery": 61.80555555555556,
@@ -139,6 +294,37 @@
         {
           "topic": "Геометрические фигуры",
           "mean": 76.6666666667,
+          "distribution": {
+            "count": 144,
+            "median": 80,
+            "q1": 70,
+            "q3": 85,
+            "min": 55,
+            "max": 100,
+            "stdDev": 10.7529065838,
+            "bins": [
+              {
+                "label": "0–<20%",
+                "count": 0
+              },
+              {
+                "label": "20–<40%",
+                "count": 0
+              },
+              {
+                "label": "40–<60%",
+                "count": 5
+              },
+              {
+                "label": "60–<80%",
+                "count": 66
+              },
+              {
+                "label": "80–100%",
+                "count": 73
+              }
+            ]
+          },
           "count": 144,
           "students": 144,
           "mastery": 78.47222222222221,
@@ -150,6 +336,37 @@
         {
           "topic": "Статистика",
           "mean": 83.2013888889,
+          "distribution": {
+            "count": 144,
+            "median": 84,
+            "q1": 76,
+            "q3": 90,
+            "min": 58,
+            "max": 100,
+            "stdDev": 9.501154799,
+            "bins": [
+              {
+                "label": "0–<20%",
+                "count": 0
+              },
+              {
+                "label": "20–<40%",
+                "count": 0
+              },
+              {
+                "label": "40–<60%",
+                "count": 2
+              },
+              {
+                "label": "60–<80%",
+                "count": 50
+              },
+              {
+                "label": "80–100%",
+                "count": 92
+              }
+            ]
+          },
           "count": 144,
           "students": 144,
           "mastery": 93.05555555555556,
@@ -163,6 +380,37 @@
         {
           "textbook": "Оқулық A",
           "mean": 67.9930555556,
+          "distribution": {
+            "count": 432,
+            "median": 70,
+            "q1": 58,
+            "q3": 80,
+            "min": 25,
+            "max": 100,
+            "stdDev": 15.9343981489,
+            "bins": [
+              {
+                "label": "0–<20%",
+                "count": 0
+              },
+              {
+                "label": "20–<40%",
+                "count": 13
+              },
+              {
+                "label": "40–<60%",
+                "count": 109
+              },
+              {
+                "label": "60–<80%",
+                "count": 195
+              },
+              {
+                "label": "80–100%",
+                "count": 115
+              }
+            ]
+          },
           "adjustedMean": 67.9930555556,
           "count": 432,
           "students": 72,
@@ -172,6 +420,37 @@
         {
           "textbook": "Оқулық B",
           "mean": 67.1111111111,
+          "distribution": {
+            "count": 432,
+            "median": 68,
+            "q1": 58,
+            "q3": 78,
+            "min": 30,
+            "max": 99,
+            "stdDev": 13.9734094923,
+            "bins": [
+              {
+                "label": "0–<20%",
+                "count": 0
+              },
+              {
+                "label": "20–<40%",
+                "count": 5
+              },
+              {
+                "label": "40–<60%",
+                "count": 119
+              },
+              {
+                "label": "60–<80%",
+                "count": 211
+              },
+              {
+                "label": "80–100%",
+                "count": 97
+              }
+            ]
+          },
           "adjustedMean": 67.1111111111,
           "count": 432,
           "students": 72,
