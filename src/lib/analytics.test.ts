@@ -123,3 +123,18 @@ describe("transparent cohort analytics", () => {
     expect(() => analyze([row("1", "X", NaN)])).toThrow();
   });
 });
+
+describe("percentage boundary stability", () => {
+  it("recognizes an exact decimal 70% without classifying it below mastery", () => {
+    const result = analyze([row("1", "Decimal", 5.81, "A", 4, 8.3)]);
+    expect(result.mean).toBe(70);
+    expect(result.mastery).toBe(100);
+    expect(result.topics[0].priority).toBe("low");
+    expect(result.topics[0].mastery).toBe(100);
+  });
+  it("retains a materially lower score below the threshold", () => {
+    const result = analyze([row("1", "Below", 69.9999999, "A", 4, 100)]);
+    expect(result.mastery).toBe(0);
+    expect(result.topics[0].priority).toBe("medium");
+  });
+});

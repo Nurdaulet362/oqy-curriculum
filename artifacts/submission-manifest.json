@@ -8,8 +8,8 @@
     },
     {
       "path": "artifacts/demo-report.json",
-      "bytes": 8291,
-      "sha256": "f4e7a9fb4d6f7a44c868766081905ac4d2434573007ec02b8363361af7949e48"
+      "bytes": 7443,
+      "sha256": "d4e51c509614f1512a05b2cb998d718bb6232aabdf5dbafd2deec3417c96571a"
     },
     {
       "path": "artifacts/demo-plan.csv",
@@ -25,6 +25,16 @@
       "path": "public/pitch.html",
       "bytes": 15578,
       "sha256": "c504f656a4d9ba6e380901c9af75fefdf367af164eb90d6e116b19ba190990a5"
+    },
+    {
+      "path": "src/lib/analytics.ts",
+      "bytes": 7712,
+      "sha256": "09b65ccff2de388193cc2cdfe68c8bbf7248f3c31ac3f8e177618e2db6f613b6"
+    },
+    {
+      "path": "src/lib/csv.ts",
+      "bytes": 7992,
+      "sha256": "d2b1ef041a2dc6546201c759968a52341e1746e29870a6706a9670b3c182d442"
     }
   ],
   "submission": "Participant submits form; no receipt claimed",

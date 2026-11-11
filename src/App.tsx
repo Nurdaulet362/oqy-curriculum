@@ -23,7 +23,7 @@ import {
   X,
 } from "lucide-react";
 import { analyze } from "./lib/analytics";
-import { parseCSV } from "./lib/csv";
+import { parseCSV, MAX_CSV_BYTES } from "./lib/csv";
 import type { Analysis, ResultRow } from "./lib/types";
 
 type View = "overview" | "books" | "plan" | "data" | "method";
@@ -49,12 +49,14 @@ function Report({
   subject,
   grade,
   school,
+  disabled,
 }: {
   analysis: Analysis;
   source: string;
   subject: string;
   grade: string;
-  school: string;
+  school: string | null;
+  disabled: boolean;
 }) {
   const exportReport = () =>
     download(
@@ -75,7 +77,7 @@ function Report({
       "application/json",
     );
   return (
-    <button className="btn secondary" onClick={exportReport}>
+    <button className="btn secondary" onClick={exportReport} disabled={disabled}>
       <ArrowDownToLine size={16} />
       Скачать отчёт
     </button>
@@ -88,7 +90,7 @@ export default function App() {
   const [isDemo, setIsDemo] = useState(true);
   const [subject, setSubject] = useState("");
   const [grade, setGrade] = useState("");
-  const [school, setSchool] = useState("all");
+  const [school, setSchool] = useState<string | null>(null);
   const [budget, setBudget] = useState<number | undefined>();
   const [budgetDraft, setBudgetDraft] = useState("");
   const [budgetError, setBudgetError] = useState("");
@@ -97,59 +99,68 @@ export default function App() {
   const [message, setMessage] = useState("");
   const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
   const fileInput = useRef<HTMLInputElement>(null);
+  const requestId = useRef(0);
+  const demoController = useRef<AbortController | null>(null);
   function install(next: ResultRow[], name: string, demo: boolean) {
     setRows(next);
     setSource(name);
     setIsDemo(demo);
     setSubject(next[0]?.subject ?? "");
     setGrade(next[0]?.grade ?? "");
-    setSchool("all");
+    setSchool(null);
     setBudget(undefined);
     setError([]);
     setSelectedTopic(null);
   }
   async function loadDemo() {
+    const id = ++requestId.current;
+    demoController.current?.abort();
+    const controller = new AbortController();
+    demoController.current = controller;
     setBusy(true);
+    setMessage("");
     try {
-      const res = await fetch("/data/demo.csv");
-      if (!res.ok)
-        throw new Error("Не удалось загрузить демо. Попробуйте ещё раз.");
-      const parsed = parseCSV(await res.text());
+      const res = await fetch("/data/demo.csv", { signal: controller.signal });
+      if (!res.ok) throw new Error("Не удалось загрузить демо. Попробуйте ещё раз.");
+      const contents = await res.text();
+      if (id !== requestId.current) return;
+      const parsed = parseCSV(contents);
       if (parsed.errors.length) throw new Error(parsed.errors.join(" "));
       install(parsed.rows, "Демонстрационный набор", true);
     } catch (e) {
-      setError([e instanceof Error ? e.message : "Ошибка загрузки"]);
+      if (id === requestId.current && !controller.signal.aborted)
+        setError([e instanceof Error ? e.message : "Ошибка загрузки"]);
     } finally {
-      setBusy(false);
+      if (id === requestId.current) setBusy(false);
     }
   }
   useEffect(() => {
     void loadDemo();
+    return () => { ++requestId.current; demoController.current?.abort(); };
   }, []);
   async function importFile(file?: File) {
     if (!file) return;
+    const id = ++requestId.current;
+    demoController.current?.abort();
     setBusy(true);
     setMessage("");
     try {
-      if (file.size > 5 * 1024 * 1024)
-        throw new Error(
-          "Файл больше 5 МБ. Разделите данные на несколько наборов.",
-        );
-      const parsed = parseCSV(await file.text());
-      if (parsed.errors.length) {
-        setError(parsed.errors);
-        return;
-      }
+      if (file.size > MAX_CSV_BYTES)
+        throw new Error("Файл больше 5 МБ. Разделите данные на несколько наборов.");
+      const contents = await file.text();
+      if (id !== requestId.current) return;
+      const parsed = parseCSV(contents);
+      if (parsed.errors.length) { setError(parsed.errors); return; }
       install(parsed.rows, file.name, false);
-      setMessage(
-        `Загружено ${parsed.rows.length} результатов. Данные обработаны локально.`,
-      );
+      setMessage(`Загружено ${parsed.rows.length} результатов. Данные обработаны локально.`);
       setView("overview");
     } catch (e) {
-      setError([e instanceof Error ? e.message : "Не удалось прочитать файл"]);
+      if (id === requestId.current) setError([e instanceof Error ? e.message : "Не удалось прочитать файл"]);
     } finally {
-      setBusy(false);
-      if (fileInput.current) fileInput.current.value = "";
+      if (id === requestId.current) {
+        setBusy(false);
+        if (fileInput.current) fileInput.current.value = "";
+      }
     }
   }
   const subjects = [...new Set(rows.map((r) => r.subject))];
@@ -169,10 +180,22 @@ export default function App() {
         (r) =>
           r.subject === subject &&
           r.grade === grade &&
-          (school === "all" || r.school === school),
+          (school === null || r.school === school),
       ),
     [rows, subject, grade, school],
   );
+  const comparison = useMemo(() => {
+    const groups = new Map<string, Map<string, { sum: number; count: number }>>();
+    for (const row of filtered) {
+      let topic = groups.get(row.topic);
+      if (!topic) { topic = new Map(); groups.set(row.topic, topic); }
+      const cell = topic.get(row.textbook) ?? { sum: 0, count: 0 };
+      cell.sum += row.score / row.max_score * 100;
+      cell.count++;
+      topic.set(row.textbook, cell);
+    }
+    return groups;
+  }, [filtered]);
   const result = useMemo(() => {
     try {
       return { analysis: analyze(filtered, budget), error: "" };
@@ -187,7 +210,7 @@ export default function App() {
   useEffect(() => {
     setBudgetDraft(String(budget ?? a?.totalHours ?? ""));
     setBudgetError("");
-  }, [budget, a?.totalHours]);
+  }, [budget, a?.totalHours, rows, subject, grade, school]);
   function applyBudget() {
     const n = Number(budgetDraft);
     if (!Number.isInteger(n) || n < (a?.topics.length ?? 1) || n > 100000) {
@@ -215,7 +238,7 @@ export default function App() {
   function changeSubject(value: string) {
     setSubject(value);
     setGrade(rows.find((r) => r.subject === value)?.grade ?? "");
-    setSchool("all");
+    setSchool(null);
     setBudget(undefined);
   }
   function exportPlan() {
@@ -389,7 +412,7 @@ export default function App() {
                 ))}
                 {error.length > 5 && <p>И ещё {error.length - 5} ошибок.</p>}
                 <small>
-                  Предыдущий набор сохранён. Исправьте CSV и загрузите повторно.
+                  Если набор уже был открыт, он сохранён. Исправьте файл или загрузите демо.
                 </small>
               </div>
               <button
@@ -450,7 +473,7 @@ export default function App() {
                     value={grade}
                     onChange={(e) => {
                       setGrade(e.target.value);
-                      setSchool("all");
+                      setSchool(null);
                       setBudget(undefined);
                     }}
                   >
@@ -465,15 +488,15 @@ export default function App() {
                   Школа
                   <select
                     aria-label="Школа"
-                    value={school}
+                    value={school === null ? "" : JSON.stringify(school)}
                     onChange={(e) => {
-                      setSchool(e.target.value);
+                      setSchool(e.target.value === "" ? null : JSON.parse(e.target.value));
                       setBudget(undefined);
                     }}
                   >
-                    {<option value="all">Все школы</option>}
+                    {<option value="">Все школы</option>}
                     {schools.map((s) => (
-                      <option key={s}>{s}</option>
+                      <option key={s} value={JSON.stringify(s)}>{s}</option>
                     ))}
                   </select>
                 </label>
@@ -485,6 +508,7 @@ export default function App() {
                   subject={subject}
                   grade={grade}
                   school={school}
+                  disabled={busy || !!budgetError}
                 />
               )}
             </div>
@@ -764,26 +788,18 @@ export default function App() {
                         <tr key={t.topic}>
                           <td>{t.topic}</td>
                           {a.books.map((b) => {
-                            const items = filtered.filter(
-                              (r) =>
-                                r.topic === t.topic &&
-                                r.textbook === b.textbook,
-                            );
+                            const cell = comparison.get(t.topic)?.get(b.textbook);
                             return (
                               <td key={b.textbook}>
-                                {items.length ? (
+                                {cell ? (
                                   <>
                                     <strong>
                                       {pct(
-                                        items.reduce(
-                                          (s, r) =>
-                                            s + (r.score / r.max_score) * 100,
-                                          0,
-                                        ) / items.length,
+                                        cell.sum / cell.count,
                                       )}
                                       %
                                     </strong>{" "}
-                                    <small>({items.length})</small>
+                                    <small>({cell.count})</small>
                                   </>
                                 ) : (
                                   "Нет данных"
@@ -851,7 +867,7 @@ export default function App() {
                       результата
                     </p>
                   </div>
-                  <button className="btn secondary" onClick={exportPlan}>
+                  <button className="btn secondary" onClick={exportPlan} disabled={busy || !!budgetError}>
                     <ArrowDownToLine size={16} />
                     Скачать план CSV
                   </button>
@@ -943,7 +959,7 @@ export default function App() {
                   <p>
                     CSV в UTF-8, до 5 МБ и 20 000 строк.
                     <br />
-                    Разделитель — запятая или точка с запятой.
+                    Разделитель — запятая или точка с запятой. До 200 тем и 20 учебников на предмет и класс.
                   </p>
                   <button
                     className="btn primary"
@@ -974,6 +990,7 @@ export default function App() {
                   </div>
                   <button
                     className="btn secondary"
+                    disabled={busy}
                     onClick={() => {
                       void loadDemo();
                       setMessage("");
@@ -1006,7 +1023,7 @@ export default function App() {
                       {[
                         [
                           "student_id",
-                          "Обезличенный уникальный код ученика",
+                          "Глобальный обезличенный ID: одна школа и класс",
                           "S001",
                         ],
                         ["school", "Школа или её код", "Школа 01"],

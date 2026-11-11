@@ -4,9 +4,10 @@
     "file": "public/data/demo.csv",
     "synthetic": true,
     "description": "Сохранённый результат на синтетических данных; не результаты реальных школьников.",
-    "generatedAt": "2026-11-11T04:17:18.893Z",
+    "generatedAt": "2026-11-11T04:26:54.715Z",
     "sha256": "9eba19d08c4e37babba1c44c9e517d4708e41aac593dcadfd51610a097d9dab9",
-    "engineSha256": "981d53edf688b1183c1ee80c0649eabafe9efa77422a4de3ef6aa25a9287b64c",
+    "engineSha256": "09b65ccff2de388193cc2cdfe68c8bbf7248f3c31ac3f8e177618e2db6f613b6",
+    "parserSha256": "d2b1ef041a2dc6546201c759968a52341e1746e29870a6706a9670b3c182d442",
     "filters": {
       "subject": "Математика",
       "grade": "7",
@@ -167,33 +168,25 @@
         "DEMO-142",
         "DEMO-143",
         "DEMO-144"
-      ],
-      "topicAggregateRows": 864,
-      "bookAggregateRows": 864,
-      "hoursConserved": true
+      ]
     },
     "method": {
-      "score": "100 * score / max_score; затем среднее по результатам",
-      "mastery": "Доля результатов с нормализованным баллом >= 70%",
-      "comparison": "Среднее с одинаковым весом общих тем; при отсутствии общих тем adjustedMean=null",
-      "allocation": "Минимум 1 час каждой теме, остаток методом наибольших остатков с весом currentHours * (1 + 3 * (100 - mean) / 100)",
-      "limitations": [
-        "Данные синтетические; независимого эталона эффективности обучения нет.",
-        "Коэффициент 3 — выбранный приоритет планирования, не оценка причинного эффекта.",
-        "Сравнение учебников наблюдательное и не контролирует влияние учителя и состава класса.",
-        "Результаты не прогнозируют улучшение успеваемости."
-      ]
+      "score": "100 × score / max_score; numerical noise rounded to 10 decimal places",
+      "mastery": "share of rows >=70%",
+      "books": "equal-weight mean over common topics",
+      "hours": "minimum1 + largest remainders; weight=currentHours*(1+3*(100-mean)/100)",
+      "limitations": "Descriptive, synthetic; no causal efficacy or educational outcome claim."
     }
   },
   "analysis": {
-    "mean": 67.55208333333333,
+    "mean": 67.5520833333,
     "mastery": 48.842592592592595,
     "students": 144,
     "schools": 3,
     "topics": [
       {
         "topic": "Дроби",
-        "mean": 51.59722222222222,
+        "mean": 51.5972222222,
         "count": 144,
         "students": 144,
         "mastery": 9.027777777777777,
@@ -204,7 +197,7 @@
       },
       {
         "topic": "Линейные уравнения",
-        "mean": 56.80555555555556,
+        "mean": 56.8055555556,
         "count": 144,
         "students": 144,
         "mastery": 15.277777777777779,
@@ -215,7 +208,7 @@
       },
       {
         "topic": "Проценты",
-        "mean": 65.40277777777777,
+        "mean": 65.4027777778,
         "count": 144,
         "students": 144,
         "mastery": 35.41666666666667,
@@ -226,7 +219,7 @@
       },
       {
         "topic": "Степени",
-        "mean": 71.63888888888889,
+        "mean": 71.6388888889,
         "count": 144,
         "students": 144,
         "mastery": 61.80555555555556,
@@ -237,7 +230,7 @@
       },
       {
         "topic": "Геометрические фигуры",
-        "mean": 76.66666666666667,
+        "mean": 76.6666666667,
         "count": 144,
         "students": 144,
         "mastery": 78.47222222222221,
@@ -248,7 +241,7 @@
       },
       {
         "topic": "Статистика",
-        "mean": 83.20138888888889,
+        "mean": 83.2013888889,
         "count": 144,
         "students": 144,
         "mastery": 93.05555555555556,
@@ -261,8 +254,8 @@
     "books": [
       {
         "textbook": "Оқулық A",
-        "mean": 67.99305555555556,
-        "adjustedMean": 67.99305555555556,
+        "mean": 67.9930555556,
+        "adjustedMean": 67.9930555556,
         "count": 432,
         "students": 72,
         "topicCount": 6,
@@ -270,8 +263,8 @@
       },
       {
         "textbook": "Оқулық B",
-        "mean": 67.11111111111111,
-        "adjustedMean": 67.1111111111111,
+        "mean": 67.1111111111,
+        "adjustedMean": 67.1111111111,
         "count": 432,
         "students": 72,
         "topicCount": 6,

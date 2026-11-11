@@ -1,0 +1,44 @@
+{
+  "testedAt": "2026-11-11T04:27:01.724Z",
+  "baseURL": "http://127.0.0.1:4180",
+  "status": "pass",
+  "checks": [
+    {
+      "name": "school named all filters independently",
+      "status": "pass"
+    },
+    {
+      "name": "subject resets dependent grade and school filters",
+      "status": "pass"
+    },
+    {
+      "name": "valid 190-character labels fit viewport",
+      "width": 1440,
+      "documentWidth": 1440,
+      "status": "pass"
+    },
+    {
+      "name": "valid 190-character labels fit viewport",
+      "width": 390,
+      "documentWidth": 390,
+      "status": "pass"
+    },
+    {
+      "name": "cohort change resets invalid draft despite unchanged total hours",
+      "status": "pass"
+    },
+    {
+      "name": "blur applies valid budget before report export",
+      "status": "pass"
+    },
+    {
+      "name": "busy restore is disabled and stale restore cannot replace later import",
+      "status": "pass"
+    },
+    {
+      "name": "untrusted HTML remains text",
+      "status": "pass"
+    }
+  ],
+  "pageErrors": []
+}

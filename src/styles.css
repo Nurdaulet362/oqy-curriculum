@@ -1649,3 +1649,11 @@ footer {
 }
 
 .nav-item,.privacy p{color:#5e6d60}.text-button{color:#52663e}.plan-banner .eyebrow,.plan-banner p,.budget-control,.conserved,.method-card>span{color:#526740}.book-cover small,.book-cover strong{color:#eff5db}.cover-1 small,.cover-1 strong{color:#2d3927}.profile>span{color:#4d5e42}.table-wrap:focus-visible{outline:3px solid #91b46b;outline-offset:-3px}
+
+/* Imported labels must not determine grid or viewport width. */
+.main-shell,main,.page-heading>div,.panel,.book-grid,.book-card,.book-card>div,.plan-banner>div,.data-grid,.method-grid{min-width:0}
+.topic-name,.book-card h2,.book-cover strong,.plan-banner h2,.insight-panel h2,.topic-detail h2{overflow-wrap:anywhere}
+.book-cover{height:auto;min-height:165px}.book-cover strong{font-size:14px}
+.filter-fields select{max-width:240px}.book-grid,.data-grid,.method-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.table-wrap th,.table-wrap td{white-space:normal;overflow-wrap:anywhere;min-width:100px;max-width:280px}
+@media(max-width:980px){.book-grid,.data-grid,.method-grid{grid-template-columns:minmax(0,1fr)}}

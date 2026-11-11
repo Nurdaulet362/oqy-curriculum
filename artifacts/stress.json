@@ -1,0 +1,11 @@
+{
+  "status": "pass",
+  "dataset": "synthetic maximum allowed cohort",
+  "rows": 20000,
+  "topics": 200,
+  "books": 20,
+  "importMs": 209,
+  "comparisonMs": 231,
+  "tableCells": 4200,
+  "scope": "Single local browser run, includes automation; not a latency guarantee or pedagogical validation."
+}

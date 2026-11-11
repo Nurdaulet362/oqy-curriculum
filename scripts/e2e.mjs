@@ -1,6 +1,6 @@
 import { chromium, expect } from "@playwright/test";
 import { existsSync } from "node:fs";
-import { readFile, writeFile, mkdir } from "node:fs/promises";
+import { readFile, writeFile, mkdir, rm } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -123,7 +123,7 @@ try {
       buffer: Buffer.from("wrong,header\n1,2"),
     });
   await expect(page.getByRole("alert")).toContainText(
-    "Предыдущий набор сохранён",
+    "Отсутствуют столбцы",
   );
   await expect(page.locator(".data-info")).toContainText(
     "864 результатов · 144 учеников",
@@ -184,6 +184,7 @@ try {
     pageErrors: errors,
     exportedReport: report,
   };
+  await rm(path.join(out, "e2e-failure.png"), { force: true });
   await writeFile(
     path.join(out, "e2e.json"),
     JSON.stringify(result, null, 2) + "\n",

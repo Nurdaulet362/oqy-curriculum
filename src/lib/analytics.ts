@@ -1,10 +1,12 @@
 import type { Analysis, BookStat, ResultRow, TopicStat } from "./types";
 
+// Remove floating-point noise at percentage decision boundaries (e.g. 5.81 / 8.3).
+const roundPercent = (value: number) => Number(value.toFixed(10));
 const average = (values: number[]) =>
   values.length
-    ? values.reduce((sum, value) => sum + value, 0) / values.length
+    ? roundPercent(values.reduce((sum, value) => sum + value, 0) / values.length)
     : 0;
-const percent = (row: ResultRow) => (row.score / row.max_score) * 100;
+const percent = (row: ResultRow) => roundPercent((row.score / row.max_score) * 100);
 const uniqueStudents = (rows: ResultRow[]) =>
   new Set(rows.map((row) => row.student_id)).size;
 const mastery = (rows: ResultRow[]) =>

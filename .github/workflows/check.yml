@@ -15,9 +15,13 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm test
+      - run: npm run test:package
+      - run: node scripts/generate-evidence.mjs --check
       - run: npm run build
       - run: npx playwright install --with-deps chromium
       - run: |
           npm run preview > /tmp/oqy-preview.log 2>&1 &
           for i in $(seq 1 30); do curl -fsS http://127.0.0.1:4173/ >/dev/null && break || sleep 1; done
           OQY_BASE_URL=http://127.0.0.1:4173 npm run test:e2e
+          OQY_BASE_URL=http://127.0.0.1:4173 npm run test:strict
+          OQY_BASE_URL=http://127.0.0.1:4173 npm run test:a11y

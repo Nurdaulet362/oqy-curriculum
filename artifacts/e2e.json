@@ -1,8 +1,8 @@
 {
   "status": "pass",
-  "baseURL": "http://127.0.0.1:4173",
-  "recordedAt": "2026-11-11T04:20:24.421Z",
-  "walkthroughSeconds": 1.025,
+  "baseURL": "http://127.0.0.1:4180",
+  "recordedAt": "2026-11-11T04:27:36.698Z",
+  "walkthroughSeconds": 0.951,
   "timingScope": "Automated functional walkthrough, includes screenshot writes and downloads; not a human speech rehearsal or performance benchmark.",
   "browser": "156.0.8078.80",
   "viewports": [
@@ -12,34 +12,34 @@
   "steps": [
     {
       "name": "overview",
-      "elapsedSeconds": 0.245,
+      "elapsedSeconds": 0.2,
       "students": 144,
       "rows": 864,
       "topics": 6
     },
     {
       "name": "topic details",
-      "elapsedSeconds": 0.324
+      "elapsedSeconds": 0.28
     },
     {
       "name": "textbook comparison",
-      "elapsedSeconds": 0.461,
+      "elapsedSeconds": 0.414,
       "books": 2,
       "commonTopics": 6
     },
     {
       "name": "default plan",
-      "elapsedSeconds": 0.497,
+      "elapsedSeconds": 0.454,
       "totalHours": 34
     },
     {
       "name": "invalid budget rejected",
-      "elapsedSeconds": 0.529,
+      "elapsedSeconds": 0.469,
       "previousBudgetRetained": 34
     },
     {
       "name": "40-hour plan",
-      "elapsedSeconds": 0.622,
+      "elapsedSeconds": 0.564,
       "proposedHours": [
         8,
         9,
@@ -51,50 +51,50 @@
     },
     {
       "name": "exports verified",
-      "elapsedSeconds": 0.709,
+      "elapsedSeconds": 0.633,
       "report": "oqy-report.json",
       "plan": "oqy-plan.csv"
     },
     {
       "name": "invalid CSV rejected",
-      "elapsedSeconds": 0.86,
+      "elapsedSeconds": 0.783,
       "previousRowsRetained": 864
     },
     {
       "name": "valid CSV imported",
-      "elapsedSeconds": 0.874,
+      "elapsedSeconds": 0.797,
       "rows": 6,
       "students": 1
     },
     {
       "name": "single textbook cannot be compared",
-      "elapsedSeconds": 0.908
+      "elapsedSeconds": 0.832
     },
     {
       "name": "demo restored",
-      "elapsedSeconds": 1.025
+      "elapsedSeconds": 0.951
     }
   ],
   "pageErrors": [],
   "exportedReport": {
     "project": "OQY",
-    "created_at": "2026-11-11T04:20:23.976Z",
+    "created_at": "2026-11-11T04:27:36.269Z",
     "source": "Демонстрационный набор",
     "filters": {
       "subject": "Математика",
       "grade": "7",
-      "school": "all"
+      "school": null
     },
     "limitations": "Описательная аналитика. Сравнение не доказывает причинную эффективность учебника. План — предложение для методиста.",
     "analysis": {
-      "mean": 67.55208333333333,
+      "mean": 67.5520833333,
       "mastery": 48.842592592592595,
       "students": 144,
       "schools": 3,
       "topics": [
         {
           "topic": "Дроби",
-          "mean": 51.59722222222222,
+          "mean": 51.5972222222,
           "count": 144,
           "students": 144,
           "mastery": 9.027777777777777,
@@ -105,7 +105,7 @@
         },
         {
           "topic": "Линейные уравнения",
-          "mean": 56.80555555555556,
+          "mean": 56.8055555556,
           "count": 144,
           "students": 144,
           "mastery": 15.277777777777779,
@@ -116,7 +116,7 @@
         },
         {
           "topic": "Проценты",
-          "mean": 65.40277777777777,
+          "mean": 65.4027777778,
           "count": 144,
           "students": 144,
           "mastery": 35.41666666666667,
@@ -127,7 +127,7 @@
         },
         {
           "topic": "Степени",
-          "mean": 71.63888888888889,
+          "mean": 71.6388888889,
           "count": 144,
           "students": 144,
           "mastery": 61.80555555555556,
@@ -138,7 +138,7 @@
         },
         {
           "topic": "Геометрические фигуры",
-          "mean": 76.66666666666667,
+          "mean": 76.6666666667,
           "count": 144,
           "students": 144,
           "mastery": 78.47222222222221,
@@ -149,7 +149,7 @@
         },
         {
           "topic": "Статистика",
-          "mean": 83.20138888888889,
+          "mean": 83.2013888889,
           "count": 144,
           "students": 144,
           "mastery": 93.05555555555556,
@@ -162,8 +162,8 @@
       "books": [
         {
           "textbook": "Оқулық A",
-          "mean": 67.99305555555556,
-          "adjustedMean": 67.99305555555556,
+          "mean": 67.9930555556,
+          "adjustedMean": 67.9930555556,
           "count": 432,
           "students": 72,
           "topicCount": 6,
@@ -171,8 +171,8 @@
         },
         {
           "textbook": "Оқулық B",
-          "mean": 67.11111111111111,
-          "adjustedMean": 67.1111111111111,
+          "mean": 67.1111111111,
+          "adjustedMean": 67.1111111111,
           "count": 432,
           "students": 72,
           "topicCount": 6,
